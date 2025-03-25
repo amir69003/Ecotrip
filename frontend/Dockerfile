@@ -3,9 +3,9 @@ FROM node:22-slim AS builder
 
 WORKDIR /app
 COPY . .
-RUN npm install && npm run build
+RUN npm install && npm run build && npm run lint
 
-# Stage 2: Serve using a lightweight web server (optional for prod)
+# Stage 2: Serve using a lightweight web server
 FROM node:22-slim
 
 WORKDIR /app
