@@ -8,16 +8,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      - ./backend:/app
 
   # frontend is a React application in Vite (node latest lts: 22) on debian-slim
   frontend:
-    image: node:22-slim
-    working_dir: /app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
+      - "5173:5173"
+    # volumes:
+    #   - ./frontend:/app
     depends_on:
       - backend
