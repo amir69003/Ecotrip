@@ -1,0 +1,92 @@
+@font-face {
+    font-family: 'League Spartan';
+    src: url('./../fonts/LeagueSpartan.ttf');
+}
+
+.homePage {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+.leftHomePage {
+    font-family: 'League Spartan', serif;
+    color: #005F00;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #ffffff, #86FF80);
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 70vw;
+}
+
+.logo {
+    width: 30vw;
+    height: auto;
+}
+
+.title{
+    font-size: 4rem;
+    margin-bottom: 30px;
+
+}
+.button{
+    background: #FFFFFF;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-top: 30px;
+}
+
+
+.button:hover{
+    transform: scale(1.1);
+}
+
+.rightHomePage {
+    font-family: 'League Spartan', serif;
+    color: #005F00;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 30vw;
+}
+.info{
+    font-size: 16px;
+}
+.inputContainer {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 10px;
+    background-color:#D2FFDB;
+    border-radius: 10px;
+}
+.input {
+    margin-left: 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+    color: #005F00;
+    width: 100%;
+}
+
+.input::placeholder {
+    color: #A2E4A2;
+}
+
+.submitButton{
+    margin-top: 20px;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.submitButton:hover{
+    transform: scale(1.1);
+}
