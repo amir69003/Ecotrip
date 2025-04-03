@@ -27,8 +27,18 @@
     left: 50%;
     transform: translate(-50%, -50%); /* Centre exactement au milieu */
 }
-.button {
-    display: flex;
+
+.button{
+    background: #B0FFAA;
+    font-weight: bold;
+    font-size: 18px;
+
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
     margin-top: 30px;
+}
+.button:hover{
+    transform: scale(1.1);
 }
 
