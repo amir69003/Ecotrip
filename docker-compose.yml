@@ -1,22 +1,53 @@
-version: '3.8'
+name: Eco Trip
 
 services:
   # backend is a Java Spring Boot application java JDK 21 java 21 on debian-slim
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    env_file: ${ENV_FILE}
+    environment:
+      - HTTP_PROXY=http://proxy.univ-lyon1.fr:3128
+      - HTTPS_PROXY=http://proxy.univ-lyon1.fr:3128
+    image: maven:3-eclipse-temurin-21
+    working_dir: /app
+    command: >
+      sh -c "
+      if [ "$ENV" = "development" ]; then
+        mvn spring-boot:run -Dspring-boot.run.profiles=development
+      else
+        mkdir -p /root/.m2 &&
+        cp .m2/settings.xml /root/.m2/settings.xml &&
+        mvn clean package -DskipTests &&
+        java -jar target/*.war --spring.profiles.active=production
+      fi
+      "
     ports:
       - "8080:8080"
+    volumes:
+      - ./backend:/app
 
   # frontend is a React application in Vite (node latest lts: 22) on debian-slim
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    env_file: ${ENV_FILE}
+    environment:
+      - NODE_ENV=${ENV}
+      - HTTP_PROXY=http://proxy.univ-lyon1.fr:3128
+      - HTTPS_PROXY=http://proxy.univ-lyon1.fr:3128
+    image: node:22-slim
+    working_dir: /app
+    command: >
+      sh -c "
+      npm install -g npm@latest &&
+      if [ "$ENV" = "development" ]; then
+        npm install &&
+        npm run dev
+      else
+        NODE_ENV=development npm ci &&
+        npm run start
+      fi
+      "
     ports:
       - "5173:5173"
-    # volumes:
-    #   - ./frontend:/app
+    volumes:
+      - ./frontend:/app
     depends_on:
       - backend
