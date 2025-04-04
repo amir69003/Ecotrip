@@ -41,7 +41,7 @@ services:
         npm install &&
         npm run dev
       else
-        npm ci &&
+        NODE_ENV=development npm ci &&
         npm run start
       fi
       "
