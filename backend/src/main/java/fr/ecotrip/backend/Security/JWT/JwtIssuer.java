@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.Security;
+package fr.ecotrip.backend.Security.JWT;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -21,6 +21,7 @@ public class JwtIssuer {
                 .withSubject(String.valueOf(userId))
                 .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.DAYS)))
                 .withClaim("email", email)
+                .withClaim("role", role)
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
     }
 

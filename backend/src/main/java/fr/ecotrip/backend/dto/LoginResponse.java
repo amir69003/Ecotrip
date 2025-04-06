@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.model;
+package fr.ecotrip.backend.dto;
 
 import lombok.Getter;
 import lombok.Builder;
