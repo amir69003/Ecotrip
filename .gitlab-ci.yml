@@ -75,6 +75,7 @@ sonarqube-check-frontend:
     paths:
       - .sonar/cache
   script: 
+    - cd frontend
     - sonar-scanner
   allow_failure: true
   only:
