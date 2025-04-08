@@ -45,6 +45,7 @@ sonarqube-check-backend:
 sonarqube-vulnerability-report-backend:
   stage: sonarqube-vulnerability-report-backend
   script:
+    - apt-get update && apt-get install -y curl  # Installer curl
     - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
   only:
