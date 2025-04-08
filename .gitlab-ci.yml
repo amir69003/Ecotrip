@@ -76,7 +76,15 @@ sonarqube-check-frontend:
       - .sonar/cache
   script: 
     - cd frontend
-    - sonar-scanner
+    - sonar-scanner \
+      -Dsonar.projectKey=${SonarQubeTokenFront} \
+      -Dsonar.projectName=EcoTripFront \
+      -Dsonar.projectVersion=1.0 \
+      -Dsonar.host.url=https://sonar.info.univ-lyon1.fr \
+      -Dsonar.login=VotreTokenDAuthentification \
+      -Dsonar.proxy.host=proxy.univ-lyon1.fr \
+      -Dsonar.proxy.port=3128 \
+      -Dsonar.proxy.nonProxyHosts=localhost|127.0.0.1 \
   allow_failure: true
   only:
     - features/sonarqube
