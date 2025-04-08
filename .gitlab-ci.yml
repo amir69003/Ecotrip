@@ -46,7 +46,7 @@ sonarqube-vulnerability-report-backend:
   allow_failure: true
   only:
     - features/sonarqube
-
+ 
   artifacts:
     expire_in: 1 day
     reports:
