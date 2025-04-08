@@ -63,31 +63,36 @@ test:
 
 sonarqube-check-frontend:
   stage: sonarqube-check-frontend
-  image: 
+  image:
     name: sonarsource/sonar-scanner-cli:5.0
     entrypoint: [""]
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
     GIT_DEPTH: "0"
     SONAR_TOKEN: "${SonarQubeTokenFront}"
+    SONAR_HOST_URL: "https://sonar.info.univ-lyon1.fr"
+    SONAR_PROXY_HOST: "proxy.univ-lyon1.fr"
+    SONAR_PROXY_PORT: "3128"
+    SONAR_PROXY_NON_PROXY_HOSTS: "localhost|127.0.0.1"
   cache:
     key: "${CI_JOB_NAME}"
     paths:
       - .sonar/cache
-  script: 
+  script:
     - cd frontend
     - sonar-scanner \
-      -Dsonar.projectKey=${SonarQubeTokenFront} \
-      -Dsonar.projectName=EcoTripFront \
-      -Dsonar.projectVersion=1.0 \
-      -Dsonar.host.url=https://sonar.info.univ-lyon1.fr \
-      -Dsonar.login=VotreTokenDAuthentification \
-      -Dsonar.proxy.host=proxy.univ-lyon1.fr \
-      -Dsonar.proxy.port=3128 \
-      -Dsonar.proxy.nonProxyHosts=localhost|127.0.0.1 \
+        -Dsonar.projectKey="${SonarQubeTokenFront}" \
+        -Dsonar.projectName="EcoTripFront" \
+        -Dsonar.projectVersion="1.0" \
+        -Dsonar.host.url="${SONAR_HOST_URL}" \
+        -Dsonar.login="${SONAR_TOKEN}" \
+        -Dsonar.proxy.host="${SONAR_PROXY_HOST}" \
+        -Dsonar.proxy.port="${SONAR_PROXY_PORT}" \
+        -Dsonar.proxy.nonProxyHosts="${SONAR_PROXY_NON_PROXY_HOSTS}"
   allow_failure: true
   only:
     - features/sonarqube
+
 
 sonarqube-vulnerability-report-frontend:
   stage: sonarqube-vulnerability-report-frontend
