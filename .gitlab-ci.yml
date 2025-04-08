@@ -80,15 +80,8 @@ sonarqube-check-frontend:
       - .sonar/cache
   script:
     - cd frontend
-    - sonar-scanner \
-        -Dsonar.projectKey="${SonarQubeTokenFront}" \
-        -Dsonar.projectName="EcoTripFront" \
-        -Dsonar.projectVersion="1.0" \
-        -Dsonar.host.url="${SONAR_HOST_URL}" \
-        -Dsonar.login="${SONAR_TOKEN}" \
-        -Dsonar.proxy.host="${SONAR_PROXY_HOST}" \
-        -Dsonar.proxy.port="${SONAR_PROXY_PORT}" \
-        -Dsonar.proxy.nonProxyHosts="${SONAR_PROXY_NON_PROXY_HOSTS}"
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}" -Dsonar.login="${SONAR_TOKEN}"
+
   allow_failure: true
   only:
     - features/sonarqube
