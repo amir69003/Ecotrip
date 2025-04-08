@@ -35,7 +35,7 @@ sonarqube-check-backend:
   script: 
     - cd backend
     - mkdir -p ~/.m2
-    - cp ${CI_PROJECT_DIR}/.m2/settings.xml ~/.m2/settings.xml
+    - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
     - mvn verify sonar:sonar
   allow_failure: true
   only:
