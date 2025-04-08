@@ -44,41 +44,41 @@ sonarqube-check-backend:
   only:
     - features/sonarqube
 
-sonarqube-vulnerability-report-backend:
-  stage: sonarqube-vulnerability-report-backend
-  script:
-    - apt-get update && apt-get install -y curl 
-    - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
-  allow_failure: true
-  only:
-    - features/sonarqube
+# sonarqube-vulnerability-report-backend:
+#   stage: sonarqube-vulnerability-report-backend
+#   script:
+#     - apt-get update && apt-get install -y curl 
+#     - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+#   allow_failure: true
+#   only:
+#     - features/sonarqube
  
-  artifacts:
-    expire_in: 1 day
-    reports:
-      sast: gl-sast-sonar-report.json
-  dependencies:
-    - sonarqube-check-backend
+#   artifacts:
+#     expire_in: 1 day
+#     reports:
+#       sast: gl-sast-sonar-report.json
+#   dependencies:
+#     - sonarqube-check-backend
  
 
-sonarqube-check-frontend:
-  stage: sonarqube-check-frontend
-  image: 
-    name: sonarsource/sonar-scanner-cli:5.0
-    entrypoint: [""]
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-    GIT_DEPTH: "0"
-    SONAR_TOKEN: "${SonarQubeToken}"
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script: 
-    - sonar-scanner
-  allow_failure: true
-  only:
-    - features/sonarqube
+# sonarqube-check-frontend:
+#   stage: sonarqube-check-frontend
+#   image: 
+#     name: sonarsource/sonar-scanner-cli:5.0
+#     entrypoint: [""]
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+#     GIT_DEPTH: "0"
+#     SONAR_TOKEN: "${SonarQubeToken}"
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+#   script: 
+#     - sonar-scanner
+#   allow_failure: true
+#   only:
+#     - features/sonarqube
 
 sonarqube-vulnerability-report-frontend:
   stage: sonarqube-vulnerability-report-frontend
