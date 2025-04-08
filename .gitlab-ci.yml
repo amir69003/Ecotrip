@@ -28,6 +28,7 @@ sonarqube-check-backend:
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
     GIT_DEPTH: "0"
+    SONAR_TOKEN: "${SonarQubeToken}"
   cache:
     key: "sonarqube-check"
     paths:
