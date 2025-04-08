@@ -53,7 +53,7 @@ sonarqube-vulnerability-report-backend:
       sast: gl-sast-sonar-report.json
   dependencies:
     - sonarqube-check-backend
-
+ 
 
 deploy:
   stage: deploy
