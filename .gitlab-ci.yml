@@ -2,8 +2,8 @@
 
 stages:
   - test
-  - sonarqube-check
-  - sonarqube-vulnerability-report
+  - sonarqube-check-backend
+  - sonarqube-vulnerability-report-backend
   - deploy
 
 test:
@@ -22,12 +22,12 @@ test:
     - echo "Tests passed!"
 
 
-sonarqube-check:
-  stage: sonarqube-check
+sonarqube-check-backend:
+  stage: sonarqube-check-backend
   image: maven:3-eclipse-temurin-17
   variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
   cache:
     key: "sonarqube-check"
     paths:
@@ -39,8 +39,8 @@ sonarqube-check:
   only:
     - features/sonarqube
 
-sonarqube-vulnerability-report:
-  stage: sonarqube-vulnerability-report
+sonarqube-vulnerability-report-backend:
+  stage: sonarqube-vulnerability-report-backend
   script:
     - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
