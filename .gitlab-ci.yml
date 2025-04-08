@@ -2,8 +2,8 @@
 
 stages:
   - test
-  # - sonarqube-check-backend
-  # - sonarqube-vulnerability-report-backend
+  - sonarqube-check-backend
+  - sonarqube-vulnerability-report-backend
   - sonarqube-check-frontend
   - sonarqube-vulnerability-report-frontend
   - deploy
@@ -24,41 +24,41 @@ test:
     - echo "Tests passed!"
 
 
-# sonarqube-check-backend:
-#   stage: sonarqube-check-backend
-#   image: maven:3-eclipse-temurin-21
-#   variables:
-#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-#     GIT_DEPTH: "0"
-#     SONAR_TOKEN: "${SonarQubeToken}"
-#   cache:
-#     key: "sonarqube-check"
-#     paths:
-#       - .sonar/cache
-#   script: 
-#     - cd backend
-#     - mkdir -p ~/.m2
-#     - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
-#     - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
-#   allow_failure: true
-#   only:
-#     - features/sonarqube
+sonarqube-check-backend:
+  stage: sonarqube-check-backend
+  image: maven:3-eclipse-temurin-21
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+    SONAR_TOKEN: "${SonarQubeToken}"
+  cache:
+    key: "sonarqube-check"
+    paths:
+      - .sonar/cache
+  script: 
+    - cd backend
+    - mkdir -p ~/.m2
+    - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
+    - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
+  allow_failure: true
+  only:
+    - features/sonarqube
 
-# sonarqube-vulnerability-report-backend:
-#   stage: sonarqube-vulnerability-report-backend
-#   script:
-#     - apt-get update && apt-get install -y curl 
-#     - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
-#   allow_failure: true
-#   only:
-#     - features/sonarqube
+sonarqube-vulnerability-report-backend:
+  stage: sonarqube-vulnerability-report-backend
+  script:
+    - apt-get update && apt-get install -y curl 
+    - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+  allow_failure: true
+  only:
+    - features/sonarqube
  
-#   artifacts:
-#     expire_in: 1 day
-#     reports:
-#       sast: gl-sast-sonar-report.json
-#   dependencies:
-#     - sonarqube-check-backend
+  artifacts:
+    expire_in: 1 day
+    reports:
+      sast: gl-sast-sonar-report.json
+  dependencies:
+    - sonarqube-check-backend
  
 
 sonarqube-check-frontend:
@@ -101,16 +101,6 @@ sonarqube-vulnerability-report-frontend:
       sast: gl-sast-sonar-report.json
   dependencies:
     - sonarqube-check-frontend
-
-
-
-
-
-
-
-
-
-
 
 
 deploy:
