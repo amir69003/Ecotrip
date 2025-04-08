@@ -69,7 +69,7 @@ sonarqube-check-frontend:
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
     GIT_DEPTH: "0"
-    SONAR_TOKEN: "${SonarQubeToken}"
+    SONAR_TOKEN: "${SonarQubeTokenFront}"
   cache:
     key: "${CI_JOB_NAME}"
     paths:
@@ -84,7 +84,7 @@ sonarqube-vulnerability-report-frontend:
   stage: sonarqube-vulnerability-report-frontend
   script:
     - apt-get update && apt-get install -y curl 
-    - 'curl -u "${SonarQubeToken}:" "${SONAR_HOST_URL}/api/issues/gitlab_sast_export?projectKey=EcoTripFront&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+    - 'curl -u "${SonarQubeTokenFront}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=EcoTripFront&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
   only:
     - features/sonarqube
