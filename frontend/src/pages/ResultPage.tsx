@@ -1,6 +1,6 @@
 import styles from "../assets/styles/result.module.css";
 import Header from "../components/Header.tsx";
-
+import ItineraryMap from "../components/ItineraryMap.tsx";
 type CarbonData = {
     departure: string,
     arrival: string,
@@ -9,9 +9,9 @@ type CarbonData = {
 }
 const fakeData: CarbonData = {
     departure: "Lyon",
-    arrival: "Paris",
+    arrival: "Bari",
     transport: "Train",
-    carbon_impact: 1.82
+    carbon_impact: 4.00
 }
 function ResultPage(){
     return (
@@ -21,7 +21,7 @@ function ResultPage(){
                 <div className={styles.whiteContainer}>
                     <div className={styles.mapResultContainer}>
                         <div className={styles.map}>
-
+                            <ItineraryMap departure={fakeData.departure} arrival={fakeData.arrival} />
                         </div>
                         <div className={styles.resultContainer}>
                             <div className={styles.collumData}>
@@ -37,7 +37,7 @@ function ResultPage(){
                                 <h1>{fakeData.transport}</h1>
                             </div>
                             <div className={styles.collumData}>
-                                <h2>Impact carbonne</h2>
+                                <h2>Impact carbone</h2>
                                 <div className={styles.rowData}>
                                     <h1>{fakeData.carbon_impact}</h1>
                                     <h3>kCO2e</h3>
