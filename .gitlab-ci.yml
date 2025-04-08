@@ -36,7 +36,7 @@ sonarqube-check-backend:
     - cd backend
     - mkdir -p ~/.m2
     - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
-    - mvn verify sonar:sonar
+    - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
   allow_failure: true
   only:
     - features/sonarqube
