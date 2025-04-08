@@ -24,25 +24,25 @@ test:
     - echo "Tests passed!"
 
 
-sonarqube-check-backend:
-  stage: sonarqube-check-backend
-  image: maven:3-eclipse-temurin-21
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-    GIT_DEPTH: "0"
-    SONAR_TOKEN: "${SonarQubeToken}"
-  cache:
-    key: "sonarqube-check"
-    paths:
-      - .sonar/cache
-  script: 
-    - cd backend
-    - mkdir -p ~/.m2
-    - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
-    - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
-  allow_failure: true
-  only:
-    - features/sonarqube
+# sonarqube-check-backend:
+#   stage: sonarqube-check-backend
+#   image: maven:3-eclipse-temurin-21
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+#     GIT_DEPTH: "0"
+#     SONAR_TOKEN: "${SonarQubeToken}"
+#   cache:
+#     key: "sonarqube-check"
+#     paths:
+#       - .sonar/cache
+#   script: 
+#     - cd backend
+#     - mkdir -p ~/.m2
+#     - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
+#     - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
+#   allow_failure: true
+#   only:
+#     - features/sonarqube
 
 # sonarqube-vulnerability-report-backend:
 #   stage: sonarqube-vulnerability-report-backend
@@ -61,24 +61,24 @@ sonarqube-check-backend:
 #     - sonarqube-check-backend
  
 
-# sonarqube-check-frontend:
-#   stage: sonarqube-check-frontend
-#   image: 
-#     name: sonarsource/sonar-scanner-cli:5.0
-#     entrypoint: [""]
-#   variables:
-#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-#     GIT_DEPTH: "0"
-#     SONAR_TOKEN: "${SonarQubeToken}"
-#   cache:
-#     key: "${CI_JOB_NAME}"
-#     paths:
-#       - .sonar/cache
-#   script: 
-#     - sonar-scanner
-#   allow_failure: true
-#   only:
-#     - features/sonarqube
+sonarqube-check-frontend:
+  stage: sonarqube-check-frontend
+  image: 
+    name: sonarsource/sonar-scanner-cli:5.0
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+    SONAR_TOKEN: "${SonarQubeToken}"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: 
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - features/sonarqube
 
 sonarqube-vulnerability-report-frontend:
   stage: sonarqube-vulnerability-report-frontend
