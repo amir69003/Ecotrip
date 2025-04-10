@@ -43,7 +43,7 @@ sonarqube-check-backend:
   allow_failure: true
   only:
     - features/sonarqube
-
+ 
 sonarqube-vulnerability-report-backend:
   stage: sonarqube-vulnerability-report-backend
   script:
