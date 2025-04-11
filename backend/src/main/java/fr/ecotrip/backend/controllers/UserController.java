@@ -8,13 +8,11 @@ import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.service.TrajetService;
 import fr.ecotrip.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,30 +25,37 @@ public class UserController {
     private final TrajetService trajetService;
 
     @GetMapping
-    public List<UserResponse> getAllUsers() {
-        return userService.findAll();
-    }
-
-    @PostMapping("/create")
-    public void createUser(@RequestBody UserRequest user) {
-        userService.createUser(user);
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<UserResponse> users = userService.findAll();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la récupération des utilisateurs.");
+        }
     }
 
     @GetMapping("/trajets")
-    public TrajetsResponse getTrajetsFromUser() {
+    public ResponseEntity<?> getTrajetsFromUser() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!(authentication.getPrincipal() instanceof UserPrincipal principal)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Utilisateur non authentifié.");
+            }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            Long userId = principal.getUserId();
+            List<Trajet> trajets = trajetService.findByUserId(userId);
 
-        Long userId = principal.getUserId();
+            return ResponseEntity.ok(
+                    TrajetsResponse.builder()
+                            .trajets(trajets)
+                            .build()
+            );
 
-        // Récupère les trajets depuis la base
-        List<Trajet> trajets = trajetService.findByUserId(userId);
-
-        return TrajetsResponse
-                .builder()
-                .trajets(trajets)
-                .build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la récupération des trajets.");
+        }
     }
-
 }

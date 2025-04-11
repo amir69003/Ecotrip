@@ -1,21 +1,24 @@
 package fr.ecotrip.backend.controllers;
 
 import fr.ecotrip.backend.Security.UserPrincipal;
+import fr.ecotrip.backend.dto.KCo2Response;
 import fr.ecotrip.backend.dto.TrajetRequest;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.model.User;
+import fr.ecotrip.backend.service.Co2Service;
 import fr.ecotrip.backend.service.TrajetService;
 import fr.ecotrip.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/trajets")
@@ -24,31 +27,123 @@ public class TrajetController {
 
     private final TrajetService trajetService;
     private final UserService userService;
+    private final Co2Service co2Service;
 
     @GetMapping
-    public List<Trajet> getAllUsers() {
-        return trajetService.findAll();
+    public ResponseEntity<?> getAllTrajets() {
+        try {
+            List<Trajet> trajets = trajetService.findAll();
+            return ResponseEntity.ok(trajets);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la récupération des trajets.");
+        }
     }
 
-    @PostMapping("/create")
-    public void createTrajet(@RequestBody TrajetRequest trajetDto) {
+    @PostMapping
+    public ResponseEntity<?> createTrajet(@RequestBody @Validated TrajetRequest trajetDto) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Utilisateur non authentifié.");
+            }
 
-        Long userId = principal.getUserId();
+            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            Long userId = principal.getUserId();
 
-        User user = userService.findById(userId);
+            User user = userService.findById(userId);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Utilisateur non trouvé.");
+            }
 
-        Trajet trajet = Trajet
-                .builder()
-                .depart(trajetDto.getDepart())
-                .arrivee(trajetDto.getArrivee())
-                .kCo2(trajetDto.getKCo2())
-                .moyenTransport(trajetDto.getMoyenTransport())
-                .user(user)
-                .build();
+            Trajet trajet = Trajet.builder()
+                    .depart(trajetDto.getDepart())
+                    .arrivee(trajetDto.getArrivee())
+                    .kCo2(trajetDto.getKCo2())
+                    .moyenTransport(trajetDto.getMoyenTransport())
+                    .user(user)
+                    .build();
 
-        trajetService.createTrajet(trajet);
+            trajetService.createTrajet(trajet);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Trajet créé avec succès.");
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Une erreur est survenue lors de la création du trajet.");
+        }
+
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTrajet(@PathVariable Long id) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Utilisateur non authentifié.");
+            }
+
+            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            Long userId = principal.getUserId();
+
+            Optional<Trajet> trajet = trajetService.findByIdTrajet(id);
+            if (trajet.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Trajet non trouvé.");
+            }
+
+            if (!trajet.get().getUser().getId().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Vous n'êtes pas autorisé à supprimer ce trajet.");
+            }
+
+            trajetService.deleteById(id);
+            return ResponseEntity.ok("Trajet supprimé avec succès.");
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Une erreur est survenue lors de la suppression du trajet.");
+        }
+    }
+
+
+    @GetMapping("/{moyenTransport}/{km}")
+    public ResponseEntity<?> calculCo2(@PathVariable Long moyenTransport, @PathVariable float km) {
+        try {
+            Double kco2 = co2Service.getKco2(moyenTransport, km);
+            if (kco2 <= -1.) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Moyen de transport introuvable ou valeur non valide");
+            }
+
+            return ResponseEntity.ok(
+                    KCo2Response.builder()
+                            .kCo2(kco2)
+                            .build()
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Une erreur est survenue lors du calcul du CO2 : " + e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/init")
+    public void initializeCo2() {
+
+        co2Service.initCo2();
+
+        ResponseEntity.ok("Créer");
+    }
+
+
 }

@@ -15,13 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthentificationFilter jwtAuthentificationFilter;
     private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -29,20 +30,19 @@ public class SecurityConfig {
         httpSecurity.addFilterBefore(jwtAuthentificationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity
-                .cors(cors -> cors.disable()) // Pour l'instant
-                .csrf(csrf -> csrf.disable()) // Pour l'instant
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(form -> form.disable())
-                .securityMatcher("/**") // Pour l'instant
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint) // ← ici
+                )
                 .authorizeHttpRequests(registry -> registry
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/auth/login").permitAll()
-                                .requestMatchers("/users/create").permitAll()
-                                .anyRequest().authenticated()
+                        .requestMatchers("/", "/auth/login", "/auth/register").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,6 +57,4 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder());
         return authManagerBuilder.build();
     }
-
-
 }

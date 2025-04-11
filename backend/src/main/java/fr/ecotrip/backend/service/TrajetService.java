@@ -1,14 +1,13 @@
 package fr.ecotrip.backend.service;
 
 
-import fr.ecotrip.backend.dto.TrajetRequest;
-import fr.ecotrip.backend.dto.TrajetsResponse;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.repositories.TrajetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +27,13 @@ public class TrajetService {
 
     public List<Trajet> findByUserId(Long id) {
         return trajetRepository.findAllByUserId(id);
+    }
+
+    public Optional<Trajet> findByIdTrajet(Long id) {
+        return trajetRepository.findById(id);
+    }
+
+    public void deleteById(Long id) {
+        trajetRepository.deleteById(id);
     }
 }
