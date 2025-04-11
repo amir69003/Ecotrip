@@ -6,6 +6,7 @@ import fr.ecotrip.backend.repositories.TrajetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,11 @@ public class TrajetService {
 
     public List<Trajet> findAll() {
         return trajetRepository.findAll();
+    }
+
+    public Trajet findOne(Long id) {
+        return trajetRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Trajet avec l'ID " + id + " non trouvé."));
     }
 
     public void createTrajet(Trajet trajet) {

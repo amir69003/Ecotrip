@@ -41,6 +41,23 @@ public class TrajetController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTrajet(@PathVariable Long id) {
+        try {
+            Trajet trajet = trajetService.findOne(id);
+            return ResponseEntity.ok(trajet);
+        } catch (IllegalArgumentException e) {
+            // Gestion de l'erreur pour un ID non trouvé
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Trajet avec l'ID " + id + " non trouvé.");
+        } catch (Exception e) {
+            // Gestion des autres erreurs internes
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la récupération des trajets.");
+        }
+    }
+
+
     @PostMapping
     public ResponseEntity<?> createTrajet(@RequestBody @Validated TrajetRequest trajetDto) {
         try {
