@@ -38,7 +38,11 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customAuthenticationEntryPoint) // ← ici
                 )
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/", "/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/",
+                                "/auth/login",
+                                "/auth/register",
+                                "/swagger-ui/**",
+                                "/v3/api-docs*/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
