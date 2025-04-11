@@ -1,12 +1,22 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import CalculPage from './pages/CalculPage.tsx'
-import Home from "./pages/Home.tsx";
-import ResultPage from "./pages/ResultPage.tsx";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Home from './pages/Home.tsx';
+import CalculPage from './pages/CalculPage.tsx';
+import ResultPage from './pages/ResultPage.tsx';
+import HistoryPage from './pages/HistoryPage.tsx';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ResultPage />
-  </StrictMode>,
-)
+    <StrictMode>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/calcul" element={<CalculPage />} />
+                <Route path="/result" element={<ResultPage />} />
+                <Route path="/history" element={<HistoryPage />} />
+            </Routes>
+        </BrowserRouter>
+    </StrictMode>
+);
