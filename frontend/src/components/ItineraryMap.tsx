@@ -1,9 +1,7 @@
-// src/components/ItineraryMap.tsx
 import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
 import ChangeView from "./ChangeView";
-import { fetchRoute } from "../api/mapApi";
+import { useItineraryRoute } from "../hooks/useItineraryRoute";
 
 type ItineraryMapProps = {
     departure: string;
@@ -11,20 +9,7 @@ type ItineraryMapProps = {
 };
 
 const ItineraryMap = ({ departure, arrival }: ItineraryMapProps) => {
-    const [coords, setCoords] = useState<[number, number][]>([]);
-
-    useEffect(() => {
-        const loadRoute = async () => {
-            try {
-                const route = await fetchRoute(departure, arrival);
-                setCoords(route);
-            } catch (error) {
-                console.error("Erreur lors du chargement de l'itinéraire :", error);
-            }
-        };
-
-        loadRoute();
-    }, [departure, arrival]);
+    const { coords, error, loading } = useItineraryRoute(departure, arrival);
 
     return (
         <MapContainer
@@ -37,12 +22,13 @@ const ItineraryMap = ({ departure, arrival }: ItineraryMapProps) => {
                 attribution='&copy; OpenStreetMap contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {coords.length > 0 && (
+            {!loading && coords.length > 0 && (
                 <>
                     <ChangeView coords={coords} />
                     <Polyline positions={coords} color="blue" />
                 </>
             )}
+            {error && console.warn(error)}
         </MapContainer>
     );
 };

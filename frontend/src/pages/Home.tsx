@@ -1,31 +1,19 @@
 import EcoTrip from "./../assets/images/EcoTrip.png";
 import styles from "./../assets/styles/home.module.css";
-import * as React from "react";
-import {useState} from "react";
 import LoginForm from "../components/LoginForm.tsx";
+import {useLoginForm} from "../hooks/useLoginForm.ts";
 
 /* #TODO: Appel a l'API pour se connecter */
 
-type LoginData = {
-    email: string,
-    password: string,
-}
+
 function Home() {
-    const [loginData, setLoginData] = useState<LoginData>({
-        email:'',
-        password:''
+
+    const { loginData, handleChange, handleSubmit } = useLoginForm((data) => {
+        alert("La connexion se fait avec l'email : " + data.email + " et le mot de passe " + data.password);
+        // 🔜 Ici, tu feras ton appel API réel
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name , value } = e.target;
-        setLoginData(prevData => ({...prevData, [name]: value}));
-    }
 
-
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        alert("La connexion se fait avec l'email : "+ loginData.email+" et le mot de passe "+ loginData.password);
-    }
     return (
         <>
             <div className={styles.homePage}>

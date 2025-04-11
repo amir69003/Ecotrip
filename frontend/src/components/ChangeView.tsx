@@ -1,4 +1,3 @@
-// src/components/ChangeView.tsx
 import { useMap } from "react-leaflet";
 import { useEffect } from "react";
 
