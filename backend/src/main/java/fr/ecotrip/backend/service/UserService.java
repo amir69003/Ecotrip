@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 import java.util.List;
 
@@ -43,6 +45,18 @@ public class UserService {
                         .build())
                 .toList();
     }
+
+
+    public UserResponse findUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
+
+        return UserResponse.builder()
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .build();
+    }
+
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);

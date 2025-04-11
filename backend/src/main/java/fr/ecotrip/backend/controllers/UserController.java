@@ -2,7 +2,6 @@ package fr.ecotrip.backend.controllers;
 
 import fr.ecotrip.backend.Security.UserPrincipal;
 import fr.ecotrip.backend.dto.TrajetsResponse;
-import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.service.TrajetService;
@@ -13,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 import java.util.List;
 
@@ -34,6 +35,21 @@ public class UserController {
                     .body("Erreur lors de la récupération des utilisateurs.");
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        try {
+            UserResponse user = userService.findUser(id);
+            return ResponseEntity.ok(user);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Utilisateur avec l'ID " + id + " non trouvé.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur interne lors de la récupération de l'utilisateur.");
+        }
+    }
+
 
     @GetMapping("/trajets")
     public ResponseEntity<?> getTrajetsFromUser() {
