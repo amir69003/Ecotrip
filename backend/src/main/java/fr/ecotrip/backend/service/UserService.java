@@ -67,5 +67,18 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-
+    public void updateUser(Long id, UserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+    
+        user.setEmail(request.getEmail());
+        user.setUsername(request.getUsername());
+    
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+    
+        userRepository.save(user);
+    }
+    
 }
