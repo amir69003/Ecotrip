@@ -5,6 +5,7 @@ import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.repositories.TrajetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import fr.ecotrip.backend.exeption.NoTrajetsFoundException;
 
 
 import java.util.List;
@@ -32,8 +33,13 @@ public class TrajetService {
     }
 
     public List<Trajet> findByUserId(Long id) {
-        return trajetRepository.findAllByUserId(id);
+        List<Trajet> trajets = trajetRepository.findAllByUserId(id);
+        if (trajets.isEmpty()) {
+            throw new NoTrajetsFoundException("Aucun trajet trouvé pour l'utilisateur avec l'ID " + id);
+        }
+        return trajets;
     }
+    
 
     public Optional<Trajet> findByIdTrajet(Long id) {
         return trajetRepository.findById(id);
