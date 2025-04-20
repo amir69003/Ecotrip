@@ -30,6 +30,14 @@ public class UserService {
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
+        if (userRepository.findByEmail(request.getEmail()) != null) {
+            throw new ForbiddenActionException("Un utilisateur avec cet email existe déjà.");
+        }
+
+        if (userRepository.findByUsername(request.getUsername()) != null) {
+            throw new ForbiddenActionException("Un utilisateur avec cet username existe déjà.");
+        }
+
         User user = User.builder()
                 .email(request.getEmail())
                 .username(request.getUsername())

@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @RestControllerAdvice
@@ -48,6 +51,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenActionException.class)
     public ResponseEntity<String> handleForbiddenAction(ForbiddenActionException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleBadCredentials(BadCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe incorrect.");
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<String> handleDisabled(DisabledException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Le compte est désactivé.");
+    }
+
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<String> handleLocked(LockedException ex) {
+        return ResponseEntity.status(HttpStatus.LOCKED).body("Le compte est verrouillé.");
     }
 
 
