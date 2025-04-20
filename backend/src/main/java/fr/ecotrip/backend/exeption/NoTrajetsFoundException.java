@@ -5,3 +5,4 @@ public class NoTrajetsFoundException extends RuntimeException {
         super(message);
     }
 }
+

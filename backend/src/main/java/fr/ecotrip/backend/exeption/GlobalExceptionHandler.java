@@ -45,8 +45,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoTrajetsFoundException.class)
     public ResponseEntity<String> handleNoTrajetsFoundException(NoTrajetsFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(UnauthenticatedUserException.class)

@@ -72,36 +72,25 @@ public class TrajetController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTrajet(@PathVariable Long id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication == null || !authentication.isAuthenticated()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Utilisateur non authentifié.");
-            }
-
-            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-            Long userId = principal.getUserId();
-
-            Optional<Trajet> trajet = trajetService.findByIdTrajet(id);
-            if (trajet.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Trajet non trouvé.");
-            }
-
-            if (!trajet.get().getUser().getId().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Vous n'êtes pas autorisé à supprimer ce trajet.");
-            }
-
-            trajetService.deleteById(id);
-            return ResponseEntity.ok("Trajet supprimé avec succès.");
-
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Une erreur est survenue lors de la suppression du trajet.");
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Utilisateur non authentifié.");
         }
+
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        Long userId = principal.getUserId();
+
+        Trajet trajet = trajetService.findByIdTrajet(id);
+
+        if (!trajet.getUser().getId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Vous n'êtes pas autorisé à supprimer ce trajet.");
+        }
+
+        trajetService.deleteById(id);
+        return ResponseEntity.ok("Trajet supprimé avec succès.");
     }
 
 

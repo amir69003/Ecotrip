@@ -9,7 +9,6 @@ import fr.ecotrip.backend.exeption.NoTrajetsFoundException;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,8 +41,9 @@ public class TrajetService {
     }
     
 
-    public Optional<Trajet> findByIdTrajet(Long id) {
-        return trajetRepository.findById(id);
+    public Trajet findByIdTrajet(Long id) {
+        return trajetRepository.findById(id)
+                .orElseThrow(() -> new NoTrajetsFoundException("Trajet avec l'ID " + id + " non trouvé."));
     }
 
     public void deleteById(Long id) {
