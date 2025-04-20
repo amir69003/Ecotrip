@@ -2,6 +2,7 @@ package fr.ecotrip.backend.service;
 
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
+import fr.ecotrip.backend.exeption.ForbiddenActionException;
 import fr.ecotrip.backend.exeption.InternalServerErrorException;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.repositories.UserRepository;
@@ -79,15 +80,11 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
 
-        // Vérifie si un autre utilisateur a déjà cet email
-        User userByEmail = userRepository.findByEmail(request.getEmail());
-        if (userByEmail != null) {
-            throw new RuntimeException("L'email est déjà utilisé.");
-        }
-
     
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
+
+
     
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));

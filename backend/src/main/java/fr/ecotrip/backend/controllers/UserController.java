@@ -64,28 +64,18 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest request) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication == null || !(authentication.getPrincipal() instanceof UserPrincipal principal)) {
-                throw new UnauthenticatedUserException("Utilisateur non authentifié.");
-            }
-
-            // UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-
-            if (!principal.getUserId().equals(id)) {
-                throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
-            }
-
-
-            userService.updateUser(id, request);
-            return ResponseEntity.ok("Utilisateur mis à jour avec succès.");
-
-        } 
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erreur lors de la mise à jour de l'utilisateur.");
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserPrincipal principal)) {
+            throw new UnauthenticatedUserException("Utilisateur non authentifié.");
         }
+
+        if (!principal.getUserId().equals(id)) {
+            throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
+        }
+        userService.updateUser(id, request);
+        return ResponseEntity.ok("Utilisateur mis à jour avec succès.");
+        
     }
 
 }
