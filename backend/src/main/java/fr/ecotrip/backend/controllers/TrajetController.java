@@ -31,69 +31,42 @@ public class TrajetController {
 
     @GetMapping
     public ResponseEntity<?> getAllTrajets() {
-        try {
-            List<Trajet> trajets = trajetService.findAll();
-            return ResponseEntity.ok(trajets);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erreur lors de la récupération des trajets.");
-        }
+        List<Trajet> trajets = trajetService.findAll();
+        return ResponseEntity.ok(trajets);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTrajet(@PathVariable Long id) {
-        try {
-            Trajet trajet = trajetService.findOne(id);
-            return ResponseEntity.ok(trajet);
-        } catch (IllegalArgumentException e) {
-            // Gestion de l'erreur pour un ID non trouvé
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Trajet avec l'ID " + id + " non trouvé.");
-        } catch (Exception e) {
-            // Gestion des autres erreurs internes
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erreur lors de la récupération des trajets.");
-        }
+        Trajet trajet = trajetService.findOne(id);
+        return ResponseEntity.ok(trajet);
     }
 
 
     @PostMapping
     public ResponseEntity<?> createTrajet(@RequestBody @Validated TrajetRequest trajetDto) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication == null || !authentication.isAuthenticated()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Utilisateur non authentifié.");
-            }
-
-            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-            Long userId = principal.getUserId();
-
-            User user = userService.findById(userId);
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Utilisateur non trouvé.");
-            }
-
-            Trajet trajet = Trajet.builder()
-                    .depart(trajetDto.getDepart())
-                    .arrivee(trajetDto.getArrivee())
-                    .kCo2(trajetDto.getKCo2())
-                    .moyenTransport(trajetDto.getMoyenTransport())
-                    .user(user)
-                    .build();
-
-            trajetService.createTrajet(trajet);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body("Trajet créé avec succès.");
-
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Une erreur est survenue lors de la création du trajet.");
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Utilisateur non authentifié.");
         }
+
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        Long userId = principal.getUserId();
+
+        User user = userService.findById(userId);
+
+        Trajet trajet = Trajet.builder()
+                .depart(trajetDto.getDepart())
+                .arrivee(trajetDto.getArrivee())
+                .kCo2(trajetDto.getKCo2())
+                .moyenTransport(trajetDto.getMoyenTransport())
+                .user(user)
+                .build();
+
+        trajetService.createTrajet(trajet);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Trajet créé avec succès.");
 
     }
 

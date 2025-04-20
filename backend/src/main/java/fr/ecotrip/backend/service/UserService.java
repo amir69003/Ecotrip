@@ -4,6 +4,7 @@ import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
 import fr.ecotrip.backend.exeption.ForbiddenActionException;
 import fr.ecotrip.backend.exeption.InternalServerErrorException;
+import fr.ecotrip.backend.exeption.UserNotFoundException;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -81,7 +82,7 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
     }
 
     public void updateUser(Long id, UserRequest request) {

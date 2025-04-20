@@ -24,8 +24,9 @@ public class TrajetService {
 
     public Trajet findOne(Long id) {
         return trajetRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Trajet avec l'ID " + id + " non trouvé."));
+                .orElseThrow(() -> new NoTrajetsFoundException("Trajet avec l'ID " + id + " non trouvé."));
     }
+    
 
     public void createTrajet(Trajet trajet) {
 
