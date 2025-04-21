@@ -1,5 +1,6 @@
 package fr.ecotrip.backend.service;
 
+import fr.ecotrip.backend.exeption.InvalidTransportException;
 import fr.ecotrip.backend.model.Co2;
 import fr.ecotrip.backend.repositories.Co2Repository;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,16 @@ public class Co2Service {
                 .orElse(-1.0);
     }
 
-    public Double getKco2(Long id, float km) {
-        return km * getKco2_1(id);
-    }
+        public Double getKco2(Long id, float km) {
+        Double kco2ParKm = getKco2_1(id);
+
+        if (kco2ParKm == null || kco2ParKm <= -1.) {
+                throw new InvalidTransportException("Moyen de transport introuvable ou valeur non valide");
+        }
+
+        return km * kco2ParKm;
+        }
+
 
 
     public void initCo2() {

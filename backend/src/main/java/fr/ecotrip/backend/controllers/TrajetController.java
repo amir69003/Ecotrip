@@ -3,6 +3,7 @@ package fr.ecotrip.backend.controllers;
 import fr.ecotrip.backend.Security.UserPrincipal;
 import fr.ecotrip.backend.dto.KCo2Response;
 import fr.ecotrip.backend.dto.TrajetRequest;
+import fr.ecotrip.backend.exeption.InvalidTransportException;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.service.Co2Service;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/trajets")
@@ -95,25 +95,16 @@ public class TrajetController {
 
 
     @GetMapping("/{moyenTransport}/{km}")
-    public ResponseEntity<?> calculCo2(@PathVariable Long moyenTransport, @PathVariable float km) {
-        try {
-            Double kco2 = co2Service.getKco2(moyenTransport, km);
-            if (kco2 <= -1.) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Moyen de transport introuvable ou valeur non valide");
-            }
+    public ResponseEntity<KCo2Response> calculCo2(@PathVariable Long moyenTransport, @PathVariable float km) {
+        Double kco2 = co2Service.getKco2(moyenTransport, km);
 
-            return ResponseEntity.ok(
-                    KCo2Response.builder()
-                            .kCo2(kco2)
-                            .build()
-            );
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Une erreur est survenue lors du calcul du CO2 : " + e.getMessage());
-        }
+        return ResponseEntity.ok(
+                KCo2Response.builder()
+                        .kCo2(kco2)
+                        .build()
+        );
     }
+
 
 
     @PostMapping("/init")
