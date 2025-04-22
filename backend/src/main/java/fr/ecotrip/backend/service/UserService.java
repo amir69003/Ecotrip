@@ -1,9 +1,11 @@
 package fr.ecotrip.backend.service;
 
+import fr.ecotrip.backend.Security.UserPrincipal;
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
 import fr.ecotrip.backend.exeption.ForbiddenActionException;
 import fr.ecotrip.backend.exeption.InternalServerErrorException;
+import fr.ecotrip.backend.exeption.UnauthenticatedUserException;
 import fr.ecotrip.backend.exeption.UserNotFoundException;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.repositories.UserRepository;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
@@ -86,6 +90,18 @@ public class UserService {
     }
 
     public void updateUser(Long id, UserRequest request) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserPrincipal principal)) {
+            throw new UnauthenticatedUserException("Utilisateur non authentifié.");
+        }
+
+        
+        if (!principal.getUserId().equals(id)) {
+            throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
+        }
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
 
