@@ -4,8 +4,6 @@ import fr.ecotrip.backend.Security.UserPrincipal;
 import fr.ecotrip.backend.dto.TrajetsResponse;
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
-import fr.ecotrip.backend.exeption.ForbiddenActionException;
-import fr.ecotrip.backend.exeption.UnauthenticatedUserException;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.service.TrajetService;
 import fr.ecotrip.backend.service.UserService;
@@ -43,15 +41,6 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // if (authentication == null || !(authentication.getPrincipal() instanceof UserPrincipal principal)) {
-        //     throw new UnauthenticatedUserException("Utilisateur non authentifié.");
-        // }
-
-        // if (!principal.getUserId().equals(id)) {
-        //     throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
-        // }
         userService.updateUser(id, request);
         return ResponseEntity.ok("Utilisateur mis à jour avec succès.");
         
@@ -61,9 +50,7 @@ public class UserController {
     public ResponseEntity<TrajetsResponse> getTrajetsFromUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserPrincipal principal)) {
-            throw new UnauthenticatedUserException("Utilisateur non authentifié.");
-        }
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
 
         Long userId = principal.getUserId();
         List<Trajet> trajets = trajetService.findByUserId(userId);

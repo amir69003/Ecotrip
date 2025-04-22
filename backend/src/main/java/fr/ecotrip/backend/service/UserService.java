@@ -97,15 +97,14 @@ public class UserService {
             throw new UnauthenticatedUserException("Utilisateur non authentifié.");
         }
 
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
+
         
         if (!principal.getUserId().equals(id)) {
             throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
         }
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
-
-    
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
 
