@@ -3,11 +3,29 @@ import Header from "../components/Header.tsx";
 import InputField from "../components/InputField.tsx";
 import { CircleDot, MapPin } from "lucide-react";
 import {useDestinationForm} from "../hooks/useDestinationForm.ts";
+import {useNavigate} from "react-router-dom";
+
+type CarbonData = {
+    departure: string;
+    arrival: string;
+    transport: string;
+    carbon_impact: number;
+};
 
 function CalculPage(){
+    const navigate = useNavigate();
+
     const { itineraryData, handleChange, handleSubmit } = useDestinationForm((data) => {
-        alert("Le départ : " +  itineraryData.departure + " et le mot de passe " + itineraryData.arrival);
-        // 🔜 Ici, tu feras ton appel API réel
+        // Simule un calcul d'impact carbone
+        const carbonTrip: CarbonData = {
+            departure: itineraryData.departure,
+            arrival: itineraryData.arrival,
+            transport: "Train", // Tu peux adapter en fonction du formulaire
+            carbon_impact: 1.82 // Idéalement calculé via API
+        };
+
+        // Rediriger avec state (passage de données)
+        navigate("/result", { state: carbonTrip });
     });
 
 

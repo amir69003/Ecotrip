@@ -1,19 +1,19 @@
 import EcoTrip from "./../assets/images/EcoTrip.png";
-import styles from "./../assets/styles/home.module.css";
-import LoginForm from "../components/LoginForm.tsx";
-import {useLoginForm} from "../hooks/useLoginForm.ts";
+import styles from "./../assets/styles/register.module.css";
 import { useNavigate } from "react-router-dom";
+import RegisterForm from "../components/RegisterForm.tsx";
+import {useRegisterForm} from "../hooks/useRegisterForm.ts";
 
 /* #TODO: Appel a l'API pour se connecter */
 
 
-function Home() {
+function RegisterPage() {
     const navigate = useNavigate(); // ← Hook pour naviguer
 
-    const { loginData, handleChange, handleSubmit } = useLoginForm((data) => {
+    const { loginData, handleChange, handleSubmit } = useRegisterForm((data) => {
         alert("La connexion se fait avec l'email : " + data.email + " et le mot de passe " + data.password);
         // 🔜 Ici, tu feras ton appel API réel
-        navigate("/calcul");
+        navigate("/");
     });
 
 
@@ -21,17 +21,18 @@ function Home() {
         <>
             <div className={styles.homePage}>
                 <div className={styles.leftHomePage}>
-                    <h1 className={styles.title}>
-                        Bienvenue sur
-                    </h1>
-                    <img src={EcoTrip} className={styles.logo} alt="Vite logo" />
-                    <button className={styles.button} onClick={()=> navigate("/register")}>Rejoignez-nous !</button>
+                    <RegisterForm registerData={loginData} handleChange={handleChange} handleSubmit={handleSubmit} />
                 </div>
                 <div className={styles.rightHomePage}>
-                    <LoginForm loginData={loginData} handleChange={handleChange} handleSubmit={handleSubmit} />
+                    <h1 className={styles.title}>
+                        Déja un compte ?
+                    </h1>
+                    <img src={EcoTrip} className={styles.logo} alt="Vite logo" />
+                    <button className={styles.button} onClick={()=> navigate("/")}>Connectez-vous !</button>
                 </div>
+
             </div>
         </>
     )
 }
-export default Home
+export default RegisterPage
