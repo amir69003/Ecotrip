@@ -1,0 +1,135 @@
+@font-face {
+    font-family: 'League Spartan';
+    src: url('./../fonts/LeagueSpartan.ttf');
+}
+
+.resultPage {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #f9f9f9, #dff7df);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Conteneur central blanc */
+.whiteContainer {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    width: 90%;
+    max-width: 1000px;
+    height: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Carte à gauche / Résultats à droite */
+.mapResultContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* Map : prend la moitié gauche */
+.map {
+    flex: 1;
+    height: 100%;
+    background-color: #e5e5e5;
+    border-radius: 1rem;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+}
+
+/* Résultats à droite */
+.resultContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+/* Bloc texte */
+.collumData h2 {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #4f4f4f;
+    margin: 0;
+}
+
+.collumData h1 {
+    font-size: 50px;
+    font-weight: 700;
+    color: #1a501a;
+    margin: 0;
+}
+
+/* Impact carbone */
+.rowData {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.rowData h1 {
+    font-size: 50px;
+    font-weight: 700;
+    color: #1a501a;
+    margin: 0;
+}
+
+.rowData h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4f4f4f;
+    margin: 0;
+}
+
+/* Boutons */
+.rowButton {
+    display: flex;
+    justify-content: center;
+    gap: 8rem;
+    width: 100%;
+}
+
+
+.button{
+    background: #B0FFAA;
+    font-weight: bold;
+    font-size: 18px;
+
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-top: 30px;
+}
+.button:hover{
+    transform: scale(1.1);
+}
+
+
+/* Responsive : mobile */
+@media (max-width: 768px) {
+    .mapResultContainer {
+        flex-direction: column;
+    }
+
+    .map, .resultContainer {
+        width: 100%;
+    }
+
+    .rowButton {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
