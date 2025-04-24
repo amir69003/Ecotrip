@@ -42,7 +42,7 @@ sonarqube-check-backend:
     - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
   allow_failure: true
   only:
-    - features/sonarqube
+    - features/main
  
 sonarqube-vulnerability-report-backend:
   stage: sonarqube-vulnerability-report-backend
@@ -51,7 +51,7 @@ sonarqube-vulnerability-report-backend:
     - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
   only:
-    - features/sonarqube
+    - features/main
  
   artifacts:
     expire_in: 1 day
@@ -84,7 +84,7 @@ sonarqube-check-frontend:
 
   allow_failure: true
   only:
-    - features/sonarqube
+    - features/main
 
 
 sonarqube-vulnerability-report-frontend:
@@ -94,7 +94,7 @@ sonarqube-vulnerability-report-frontend:
     - 'curl -u "${SonarQubeTokenFront}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=EcoTripFront&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
   only:
-    - features/sonarqube
+    - features/main
   artifacts:
     expire_in: 1 day
     reports:
