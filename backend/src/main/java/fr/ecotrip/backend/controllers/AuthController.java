@@ -7,8 +7,6 @@ import fr.ecotrip.backend.dto.LoginResponse;
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,36 +25,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Validated UserRequest user) {
-        try {
-            userService.createUser(user);
-            return ResponseEntity.ok(authenticateAndGenerateToken(user.getEmail(), user.getPassword()));
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Un utilisateur avec cet email ou username existe déjà.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Une erreur est survenue lors de l'enregistrement.");
-        }
+        userService.createUser(user);
+        return ResponseEntity.ok(authenticateAndGenerateToken(user.getEmail(), user.getPassword()));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated LoginRequest request) {
-        try {
-            return ResponseEntity.ok(authenticateAndGenerateToken(request.getEmail(), request.getPassword()));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Email ou mot de passe incorrect.");
-        } catch (DisabledException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Le compte est désactivé.");
-        } catch (LockedException e) {
-            return ResponseEntity.status(HttpStatus.LOCKED)
-                    .body("Le compte est verrouillé.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Une erreur est survenue lors de la connexion.");
-        }
+        LoginResponse response = authenticateAndGenerateToken(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
     }
+    
 
     private LoginResponse authenticateAndGenerateToken(String email, String password) {
         var auth = authenticationManager.authenticate(
