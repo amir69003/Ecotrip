@@ -3,7 +3,6 @@ package fr.ecotrip.backend.controllers;
 import fr.ecotrip.backend.Security.UserPrincipal;
 import fr.ecotrip.backend.dto.KCo2Response;
 import fr.ecotrip.backend.dto.TrajetRequest;
-import fr.ecotrip.backend.exeption.InvalidTransportException;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.service.Co2Service;
@@ -46,11 +45,6 @@ public class TrajetController {
     public ResponseEntity<?> createTrajet(@RequestBody @Validated TrajetRequest trajetDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Utilisateur non authentifié.");
-        }
-
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         Long userId = principal.getUserId();
 
@@ -72,23 +66,6 @@ public class TrajetController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTrajet(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Utilisateur non authentifié.");
-        }
-
-        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-        Long userId = principal.getUserId();
-
-        Trajet trajet = trajetService.findByIdTrajet(id);
-
-        if (!trajet.getUser().getId().equals(userId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Vous n'êtes pas autorisé à supprimer ce trajet.");
-        }
-
         trajetService.deleteById(id);
         return ResponseEntity.ok("Trajet supprimé avec succès.");
     }
@@ -104,8 +81,6 @@ public class TrajetController {
                         .build()
         );
     }
-
-
 
     @PostMapping("/init")
     public void initializeCo2() {
