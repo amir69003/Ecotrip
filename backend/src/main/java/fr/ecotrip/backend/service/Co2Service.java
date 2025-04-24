@@ -75,12 +75,29 @@ public class Co2Service {
                         .transport("voitureElec")
                         .build();
 
+        Co2 avion =
+                Co2
+                        .builder()
+                        .kco2(150.0 * 0.001)
+                        .transport("avion")
+                        .build();
+
+        Co2 bateau =
+                Co2
+                        .builder()
+                        .kco2(100.0 * 0.001)
+                        .transport("bateau")
+                        .build();
+
+
         co2Repository.save(marche);
         co2Repository.save(trot);
         co2Repository.save(voitureElec);
         co2Repository.save(train);
         co2Repository.save(bus);
         co2Repository.save(voitureThermique);
+        co2Repository.save(avion);
+        co2Repository.save(bateau);
     }
 
 }
