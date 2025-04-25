@@ -2,30 +2,48 @@
 
 stages:
   - test
-  - sonarqube-check-backend
-  - sonarqube-vulnerability-report-backend
-  - sonarqube-check-frontend
-  - sonarqube-vulnerability-report-frontend
+  - sonarqube-check
+  - sonarqube-vulnerability-report
   - deploy
 
-test:
+test:backend:
   stage: test
   image: maven:3-eclipse-temurin-21
-  script:
-    - echo "Running tests..."
+  before_script:
+    - cd backend
     - touch .env
     - echo 'ENV=production' > .env
     - echo 'ENV_FILE=.env' >> .env
     - echo 'DB_NAME=$DB_NAME' >> .env
-    - echo 'DB_HOST=$DB_HOST' >> .env
+    - echo 'DB_HOST=$HOST:5432' >> .env
     - echo 'DB_USERNAME=$DB_USERNAME' >> .env
     - echo 'DB_PASSWORD=$DB_PASSWORD' >> .env
-    # - mvn clean test
+  script:
+    - echo "Running tests on backend..."
+    - mvn clean test
     - echo "Tests passed!"
 
+test:frontend:
+  stage: test
+  image: node:22-slim
+  before_script:
+    - cd frontend
+    - touch .env
+    - echo 'ENV=production' > .env
+    - echo 'ENV_FILE=.env' >> .env
+    - echo 'DB_NAME=$DB_NAME' >> .env
+    - echo 'DB_HOST=$HOST:5432' >> .env
+    - echo 'DB_USERNAME=$DB_USERNAME' >> .env
+    - echo 'DB_PASSWORD=$DB_PASSWORD' >> .env
+  script:
+    - echo "Running tests on frontend..."
+    - NODE_ENV=development npm ci
+    - npm run build
+    # - npm run test
+    - echo "Tests passed!"
 
-sonarqube-check-backend:
-  stage: sonarqube-check-backend
+sc:backend:
+  stage: sonarqube-check
   image: maven:3-eclipse-temurin-21
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
@@ -35,37 +53,45 @@ sonarqube-check-backend:
     key: "sonarqube-check"
     paths:
       - .sonar/cache
-  script: 
+  before_script:
     - cd backend
+    - touch .env
+    - echo 'ENV=production' > .env
+    - echo 'ENV_FILE=.env' >> .env
+    - echo 'DB_NAME=$DB_NAME' >> .env
+    - echo 'DB_HOST=$HOST:5432' >> .env
+    - echo 'DB_USERNAME=$DB_USERNAME' >> .env
+    - echo 'DB_PASSWORD=$DB_PASSWORD' >> .env
+  script:
     - mkdir -p ~/.m2
     - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
     - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
   allow_failure: true
   only:
     - main
- 
-sonarqube-vulnerability-report-backend:
-  stage: sonarqube-vulnerability-report-backend
+
+svr:backend:
+  stage: sonarqube-vulnerability-report
   script:
-    - apt-get update && apt-get install -y curl 
+    - apt-get update && apt-get install -y curl
     - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
   only:
     - main
- 
+
   artifacts:
     expire_in: 1 day
     reports:
       sast: gl-sast-sonar-report.json
   dependencies:
     - sonarqube-check-backend
- 
 
-sonarqube-check-frontend:
-  stage: sonarqube-check-frontend
+
+sc:frontend:
+  stage: sonarqube-check
   image:
     name: sonarsource/sonar-scanner-cli:5.0
-    entrypoint: [""]
+    entrypoint: [ "" ]
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
     GIT_DEPTH: "0"
@@ -87,10 +113,10 @@ sonarqube-check-frontend:
     - main
 
 
-sonarqube-vulnerability-report-frontend:
-  stage: sonarqube-vulnerability-report-frontend
+svr:frontend:
+  stage: sonarqube-vulnerability-report
   script:
-    - apt-get update && apt-get install -y curl 
+    - apt-get update && apt-get install -y curl
     - 'curl -u "${SonarQubeTokenFront}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=EcoTripFront&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
   allow_failure: true
   only:
