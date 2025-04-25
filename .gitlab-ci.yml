@@ -20,6 +20,7 @@ test:
     - echo 'DB_HOST=$DB_HOST' >> .env
     - echo 'DB_USERNAME=$DB_USERNAME' >> .env
     - echo 'DB_PASSWORD=$DB_PASSWORD' >> .env
+    - cd backend
     - mvn clean test
     - echo "Tests passed!"
 
