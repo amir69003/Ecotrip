@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
 import tripsData from "../assets/data/trip.json";
 import usePagination from "../hooks/usePagination";
 import HistoryTable from "../components/HistoryTable";
