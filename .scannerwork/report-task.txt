@@ -1,0 +1,6 @@
+projectKey=EcoTrip
+serverUrl=https://sonar.info.univ-lyon1.fr
+serverVersion=10.2.1.78527
+dashboardUrl=https://sonar.info.univ-lyon1.fr/dashboard?id=EcoTrip
+ceTaskId=AZZoDXzlRe7mU3_qr53q
+ceTaskUrl=https://sonar.info.univ-lyon1.fr/api/ce/task?id=AZZoDXzlRe7mU3_qr53q
