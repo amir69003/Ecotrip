@@ -20,6 +20,8 @@ test:backend:
     - echo 'DB_PASSWORD=$DB_PASSWORD' >> .env
   script:
     - echo "Running tests on backend..."
+    - mkdir -p ~/.m2
+    - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
     - mvn clean test
     - echo "Tests passed!"
 
