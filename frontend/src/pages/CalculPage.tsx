@@ -15,7 +15,7 @@ type CarbonData = {
 function CalculPage(){
     const navigate = useNavigate();
 
-    const { itineraryData, handleChange, handleSubmit } = useDestinationForm((data) => {
+    const { itineraryData, handleChange, handleSubmit } = useDestinationForm(() => {
         // Simule un calcul d'impact carbone
         const carbonTrip: CarbonData = {
             departure: itineraryData.departure,
