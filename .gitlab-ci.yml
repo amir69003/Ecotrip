@@ -84,7 +84,7 @@ svr:backend:
     reports:
       sast: gl-sast-sonar-report.json
   dependencies:
-    - sonarqube-check-backend
+    - sc:backend
 
 
 sc:frontend:
@@ -126,7 +126,7 @@ svr:frontend:
     reports:
       sast: gl-sast-sonar-report.json
   dependencies:
-    - sonarqube-check-frontend
+    - sc:frontend
 
 
 deploy:
