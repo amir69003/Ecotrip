@@ -2,6 +2,10 @@
 
 stages:
   - test
+  - sonarqube-check-backend
+  - sonarqube-vulnerability-report-backend
+  - sonarqube-check-frontend
+  - sonarqube-vulnerability-report-frontend
   - deploy
 
 test:
@@ -18,6 +22,86 @@ test:
     - echo 'DB_PASSWORD=$DB_PASSWORD' >> .env
     # - mvn clean test
     - echo "Tests passed!"
+
+
+sonarqube-check-backend:
+  stage: sonarqube-check-backend
+  image: maven:3-eclipse-temurin-21
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+    SONAR_TOKEN: "${SonarQubeToken}"
+  cache:
+    key: "sonarqube-check"
+    paths:
+      - .sonar/cache
+  script: 
+    - cd backend
+    - mkdir -p ~/.m2
+    - cp ${CI_PROJECT_DIR}/backend/.m2/settings.xml ~/.m2/settings.xml
+    - mvn verify sonar:sonar -Dsonar.host.url=https://sonar.info.univ-lyon1.fr
+  allow_failure: true
+  only:
+    - main
+ 
+sonarqube-vulnerability-report-backend:
+  stage: sonarqube-vulnerability-report-backend
+  script:
+    - apt-get update && apt-get install -y curl 
+    - 'curl -u "${SonarQubeToken}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=grp16_projet-master_AZYBDK43Re7mU3_qr5f_&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+  allow_failure: true
+  only:
+    - main
+ 
+  artifacts:
+    expire_in: 1 day
+    reports:
+      sast: gl-sast-sonar-report.json
+  dependencies:
+    - sonarqube-check-backend
+ 
+
+sonarqube-check-frontend:
+  stage: sonarqube-check-frontend
+  image:
+    name: sonarsource/sonar-scanner-cli:5.0
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+    SONAR_TOKEN: "${SonarQubeTokenFront}"
+    SONAR_HOST_URL: "https://sonar.info.univ-lyon1.fr"
+    SONAR_PROXY_HOST: "proxy.univ-lyon1.fr"
+    SONAR_PROXY_PORT: "3128"
+    SONAR_PROXY_NON_PROXY_HOSTS: "localhost|127.0.0.1"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - cd frontend
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}" -Dsonar.login="${SONAR_TOKEN}"
+
+  allow_failure: true
+  only:
+    - main
+
+
+sonarqube-vulnerability-report-frontend:
+  stage: sonarqube-vulnerability-report-frontend
+  script:
+    - apt-get update && apt-get install -y curl 
+    - 'curl -u "${SonarQubeTokenFront}:" "${SonarQubeURL}/api/issues/gitlab_sast_export?projectKey=EcoTripFront&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+  allow_failure: true
+  only:
+    - main
+  artifacts:
+    expire_in: 1 day
+    reports:
+      sast: gl-sast-sonar-report.json
+  dependencies:
+    - sonarqube-check-frontend
+
 
 deploy:
   stage: deploy

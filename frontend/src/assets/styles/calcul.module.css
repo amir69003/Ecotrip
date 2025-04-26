@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'League Spartan';
+    src: url('./../fonts/LeagueSpartan.ttf');
+}
+
+.calculPage {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    color: #005F00;
+    background: linear-gradient(to bottom, #ffffff, #B0FFAA);
+    flex-direction: column;
+}
+
+.containerComparer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40vw;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    position: absolute; /* Permet de le positionner précisément */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centre exactement au milieu */
+}
+
+.button{
+    background: #B0FFAA;
+    font-weight: bold;
+    font-size: 18px;
+
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-top: 30px;
+}
+.button:hover{
+    transform: scale(1.1);
+}
+
