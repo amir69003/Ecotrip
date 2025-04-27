@@ -106,6 +106,7 @@ public class UserService {
             throw new UnauthenticatedUserException("Utilisateur non authentifié.");
         }
 
+
         User user = userRepository.findById(id)
             .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
 
@@ -113,6 +114,19 @@ public class UserService {
         if (!principal.getUserId().equals(id)) {
             throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
         }
+
+        User existingUser = userRepository.findByEmail(request.getEmail());
+
+        if (existingUser != null && !existingUser.getId().equals(id)) {
+            throw new ForbiddenActionException("Cet email est déjà utilisé par un autre utilisateur.");
+        }
+
+        User existingUserWithUsername = userRepository.findByUsername(request.getUsername());
+
+        if (existingUserWithUsername != null && !existingUserWithUsername.getId().equals(id)) {
+            throw new ForbiddenActionException("Ce nom d'utilisateur est déjà utilisé par un autre utilisateur.");
+        }
+        
 
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
