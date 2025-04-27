@@ -1,12 +1,6 @@
-import styles from "../assets/styles/history.module.css";
 import { useNavigate } from "react-router-dom";
-
-type Trip = {
-    departure: string;
-    arrival: string;
-    transport: string;
-    carbon_impact: number;
-};
+import styles from "../assets/styles/history.module.css";
+import { Trip } from "../assets/types/trip.ts";
 
 type Props = {
     trips: Trip[];
@@ -14,7 +8,7 @@ type Props = {
     goToPage: (page: number) => void;
     totalPages: number;
     paginationRange: number[];
-    onDelete: (trip: Trip) => void; // nouvelle prop
+    onDelete: (trip: Trip) => void;
 };
 
 export default function HistoryTable({
@@ -23,9 +17,13 @@ export default function HistoryTable({
                                          goToPage,
                                          totalPages,
                                          paginationRange,
-                                         onDelete
+                                         onDelete,
                                      }: Props) {
     const navigate = useNavigate();
+
+    const handleNavigate = (trip: Trip) => {
+        navigate("/result", { state: trip });
+    };
 
     return (
         <div className={styles.container}>
@@ -42,14 +40,39 @@ export default function HistoryTable({
                 <tbody>
                 {trips.map((trip, index) => (
                     <tr key={index} className={styles.row}>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.departure}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.arrival}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.transport}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>
+                        <td onClick={() => handleNavigate(trip)}>
+                            <div className={styles.lieu}>
+                                <div>{trip.departure.ville || trip.departure.displayName}</div>
+                                {trip.departure.region && (
+                                    <div className={styles.sousTexte}>{trip.departure.region}</div>
+                                )}
+                                {trip.departure.pays && (
+                                    <div className={styles.sousTexte}>{trip.departure.pays}</div>
+                                )}
+                            </div>
+                        </td>
+                        <td onClick={() => handleNavigate(trip)}>
+                            <div className={styles.lieu}>
+                                <div>{trip.arrival.ville || trip.arrival.displayName}</div>
+                                {trip.arrival.region && (
+                                    <div className={styles.sousTexte}>{trip.arrival.region}</div>
+                                )}
+                                {trip.arrival.pays && (
+                                    <div className={styles.sousTexte}>{trip.arrival.pays}</div>
+                                )}
+                            </div>
+                        </td>
+                        <td onClick={() => handleNavigate(trip)}>
+                            {trip.transport}
+                        </td>
+                        <td onClick={() => handleNavigate(trip)}>
                             <strong>{trip.carbon_impact}</strong> kCO2e
                         </td>
                         <td>
-                            <button className={styles.deleteButton} onClick={() => onDelete(trip)}>
+                            <button
+                                className={styles.deleteButton}
+                                onClick={() => onDelete(trip)}
+                            >
                                 Supprimer
                             </button>
                         </td>
@@ -59,9 +82,13 @@ export default function HistoryTable({
             </table>
 
             <div className={styles.pagination}>
-                <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+                <button
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
                     Page précédente
                 </button>
+
                 {paginationRange.map((page) => (
                     <button
                         key={page}
@@ -71,7 +98,11 @@ export default function HistoryTable({
                         {page}
                     </button>
                 ))}
-                <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+
+                <button
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
                     Page suivante
                 </button>
             </div>
