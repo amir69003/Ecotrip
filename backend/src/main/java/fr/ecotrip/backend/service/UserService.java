@@ -130,8 +130,6 @@ public class UserService {
 
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
-
-
     
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
