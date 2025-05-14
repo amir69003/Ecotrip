@@ -1,8 +1,7 @@
 import axios from 'axios';
+import { pathLocal, path } from './config.js'; // importe ici
 
 let token = null;
-let pathLocal = "http://localhost:8080/";
-let path = "http://192.168.75.123/";
 
 describe("API /auth/login", () => {
   it("should login the user and return an access token", async () => {
