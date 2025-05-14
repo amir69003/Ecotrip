@@ -8,6 +8,8 @@ import CalculPage from './pages/CalculPage.tsx';
 import ResultPage from './pages/ResultPage.tsx';
 import HistoryPage from './pages/HistoryPage.tsx';
 import RegisterPage from "./pages/RegisterPage.tsx";
+import SharedTripsPage from './pages/SharedTripsPage.tsx';
+import AdminReferencePage from './pages/AdminReferencePage';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -18,6 +20,8 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/calcul" element={<CalculPage />} />
                 <Route path="/result" element={<ResultPage />} />
                 <Route path="/history" element={<HistoryPage />} />
+                <Route path="/shared-trips" element={<SharedTripsPage />} />
+                <Route path="/admin/reference" element={<AdminReferencePage />} />
             </Routes>
         </BrowserRouter>
     </StrictMode>
