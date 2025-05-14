@@ -1,6 +1,6 @@
 // tests/authRouter.spec.js
 import axios from 'axios';
-import { pathLocal, path, idLocal, id} from './config.js';
+import { pathLocal, path, idLocal, idVm} from './config.js';
 
 let token = null;
 
@@ -46,7 +46,7 @@ describe("API Authentication and User Retrieval", () => {
     try {
       expect(token).not.toBeNull();
 
-      const response = await axios.get(`${path}api/users/${id}`, {
+      const response = await axios.get(`${path}api/users/${idVm}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ describe("API Authentication and User Retrieval", () => {
         password: "jasmine"
       };
 
-      const response = await axios.put(`${path}api/users/${id}`, updatePayload, {
+      const response = await axios.put(`${path}api/users/${idVm}`, updatePayload, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -119,7 +119,7 @@ describe("API Authentication and User Retrieval", () => {
         password: "jasmine"
       };
 
-      const response = await axios.put(`${path}api/users/${id}`, updatePayload, {
+      const response = await axios.put(`${path}api/users/${idVm}`, updatePayload, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -134,7 +134,7 @@ describe("API Authentication and User Retrieval", () => {
     }
   });
 
-    it("should fail to update the user with an email already used by another user", async () => {
+  it("should fail to update the user with an email already used by another user", async () => {
     try {
       expect(token).not.toBeNull();
 
@@ -144,7 +144,7 @@ describe("API Authentication and User Retrieval", () => {
         password: "jasmine"
       };
 
-      await axios.put(`${path}api/users/${id}`, updatePayload, {
+      await axios.put(`${path}api/users/${idVm}`, updatePayload, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -171,7 +171,7 @@ describe("API Authentication and User Retrieval", () => {
         password: "jasmine"
       };
 
-      await axios.put(`${path}api/users/${id}`, updatePayload, {
+      await axios.put(`${path}api/users/${idVm}`, updatePayload, {
         headers: {
           Authorization: `Bearer ${token}`
         }
