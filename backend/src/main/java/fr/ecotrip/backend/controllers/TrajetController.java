@@ -2,6 +2,7 @@ package fr.ecotrip.backend.controllers;
 
 import fr.ecotrip.backend.Security.UserPrincipal;
 import fr.ecotrip.backend.dto.KCo2Response;
+import fr.ecotrip.backend.dto.TrajetCommunResponse;
 import fr.ecotrip.backend.dto.TrajetRequest;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.model.User;
@@ -15,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -94,5 +94,16 @@ public class TrajetController {
         ResponseEntity.ok("Créer");
     }
 
+    @GetMapping("/{id}/communs")
+    public ResponseEntity<?> getTrajetsCommuns(@PathVariable Long id) {
+        List<TrajetCommunResponse> trajetsCommuns = trajetService.findTrajetsCommuns(id);
+        return ResponseEntity.ok(trajetsCommuns);
+    }
+
+    @GetMapping("/communs")
+    public ResponseEntity<?> getAllTrajetsCommuns() {
+        List<TrajetCommunResponse> trajetsCommuns = trajetService.getAllTrajetsCommuns();
+        return ResponseEntity.ok(trajetsCommuns);
+    }
 
 }
