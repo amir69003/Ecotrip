@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class TrajetService {
 
     public final TrajetRepository trajetRepository;
-    private final UserService userService;
 
 
     public List<Trajet> findAll() {

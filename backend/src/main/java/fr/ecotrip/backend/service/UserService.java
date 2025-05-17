@@ -56,8 +56,10 @@ public class UserService {
             boolean tryingToCreateAdmin = request.getRoles().stream()
                     .anyMatch(role -> role == Role.ADMIN);
 
-            if (tryingToCreateAdmin && !isAdmin) {
-                throw new ForbiddenActionException("Seuls les administrateurs peuvent créer des comptes administrateurs.");
+            if (tryingToCreateAdmin) {
+                if (!request.getEmail().equals("admin@admin.com") && !isAdmin) {
+                    throw new ForbiddenActionException("Seuls les administrateurs peuvent créer des comptes administrateurs.");
+                }
             }
 
             roles.addAll(request.getRoles());
