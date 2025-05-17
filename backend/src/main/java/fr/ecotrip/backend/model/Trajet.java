@@ -26,7 +26,13 @@ public class Trajet {
     private Long id;
 
     private String depart;
+    private Double departLatitude;
+    private Double departLongitude;
+    
     private String arrivee;
+    private Double arriveeLatitude;
+    private Double arriveeLongitude;
+    
     private String moyenTransport;
     private Double kCo2;
 

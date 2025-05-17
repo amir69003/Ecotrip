@@ -52,7 +52,11 @@ public class TrajetController {
 
         Trajet trajet = Trajet.builder()
                 .depart(trajetDto.getDepart())
+                .departLatitude(trajetDto.getDepartLatitude())
+                .departLongitude(trajetDto.getDepartLongitude())
                 .arrivee(trajetDto.getArrivee())
+                .arriveeLatitude(trajetDto.getArriveeLatitude())
+                .arriveeLongitude(trajetDto.getArriveeLongitude())
                 .kCo2(trajetDto.getKCo2())
                 .moyenTransport(trajetDto.getMoyenTransport())
                 .user(user)
