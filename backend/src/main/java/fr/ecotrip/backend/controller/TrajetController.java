@@ -2,6 +2,7 @@ package fr.ecotrip.backend.controller;
 
 import fr.ecotrip.backend.security.UserPrincipal;
 import fr.ecotrip.backend.dto.KCo2Response;
+import fr.ecotrip.backend.dto.TrajetCommunResponse;
 import fr.ecotrip.backend.dto.TrajetRequest;
 import fr.ecotrip.backend.model.Trajet;
 import fr.ecotrip.backend.model.User;
@@ -15,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -52,7 +52,11 @@ public class TrajetController {
 
         Trajet trajet = Trajet.builder()
                 .depart(trajetDto.getDepart())
+                .departLatitude(trajetDto.getDepartLatitude())
+                .departLongitude(trajetDto.getDepartLongitude())
                 .arrivee(trajetDto.getArrivee())
+                .arriveeLatitude(trajetDto.getArriveeLatitude())
+                .arriveeLongitude(trajetDto.getArriveeLongitude())
                 .kCo2(trajetDto.getKCo2())
                 .moyenTransport(trajetDto.getMoyenTransport())
                 .user(user)
@@ -90,5 +94,16 @@ public class TrajetController {
         ResponseEntity.ok("Créer");
     }
 
+    @GetMapping("/{id}/communs")
+    public ResponseEntity<?> getTrajetsCommuns(@PathVariable Long id) {
+        List<TrajetCommunResponse> trajetsCommuns = trajetService.findTrajetsCommuns(id);
+        return ResponseEntity.ok(trajetsCommuns);
+    }
+
+    @GetMapping("/communs")
+    public ResponseEntity<?> getAllTrajetsCommuns() {
+        List<TrajetCommunResponse> trajetsCommuns = trajetService.getAllTrajetsCommuns();
+        return ResponseEntity.ok(trajetsCommuns);
+    }
 
 }
