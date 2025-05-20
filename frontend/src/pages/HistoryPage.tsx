@@ -1,13 +1,13 @@
-import { useState } from "react";
+import {useState} from "react";
 import tripsData from "../assets/data/trip.json";
 import usePagination from "../hooks/usePagination";
 import HistoryTable from "../components/HistoryTable";
-import Layout from "../components/Layout.tsx";
+import CustomLayout from "../components/CustomLayout.tsx";
 
 function HistoryPage() {
     const [trips, setTrips] = useState(tripsData);
 
-    const { currentData, currentPage, goToPage, totalPages, paginationRange } =
+    const {currentData, currentPage, goToPage, totalPages, paginationRange} =
         usePagination(trips, 7);
 
     const handleDelete = (tripToDelete: typeof trips[0]) => {
@@ -19,8 +19,7 @@ function HistoryPage() {
     };
 
     return (
-
-            <Layout>
+        <CustomLayout>
             <HistoryTable
                 trips={currentData}
                 currentPage={currentPage}
@@ -29,7 +28,7 @@ function HistoryPage() {
                 paginationRange={paginationRange()}
                 onDelete={handleDelete}
             />
-            </Layout>
+        </CustomLayout>
     );
 }
 

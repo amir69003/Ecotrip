@@ -1,7 +1,7 @@
 import styles from "../assets/styles/result.module.css";
-import Header from "../components/Header.tsx";
-import ItineraryMap from "../components/ItineraryMap.tsx";
-import { useLocation, useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import ItineraryMap from "../components/ItineraryMap";
+import {useLocation, useNavigate} from "react-router";
 
 type CarbonData = {
     departure: string;
@@ -20,7 +20,7 @@ function ResultPage() {
     if (!data) {
         return (
             <div className={styles.resultPage}>
-                <Header isAuthenticated={true} />
+                <Header/>
                 <div className={styles.whiteContainer}>
                     <h2>Aucun trajet sélectionné.</h2>
                     <button className={styles.button} onClick={() => navigate("/history")}>
@@ -33,11 +33,11 @@ function ResultPage() {
 
     return (
         <div className={styles.resultPage}>
-            <Header isAuthenticated={true} />
+            <Header/>
             <div className={styles.whiteContainer}>
                 <div className={styles.mapResultContainer}>
                     <div className={styles.map}>
-                        <ItineraryMap departure={data.departure} arrival={data.arrival} />
+                        <ItineraryMap departure={data.departure} arrival={data.arrival}/>
                     </div>
                     <div className={styles.resultContainer}>
                         <div className={styles.collumData}>

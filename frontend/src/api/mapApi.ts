@@ -1,4 +1,3 @@
-// src/api/mapApi.ts
 import axios from "axios";
 
 /**

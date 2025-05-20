@@ -1,5 +1,5 @@
 import styles from "../assets/styles/history.module.css";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router";
 
 type Trip = {
     departure: string;
@@ -42,10 +42,10 @@ export default function HistoryTable({
                 <tbody>
                 {trips.map((trip, index) => (
                     <tr key={index} className={styles.row}>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.departure}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.arrival}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.transport}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>
+                        <td onClick={() => navigate("/result", {state: trip})}>{trip.departure}</td>
+                        <td onClick={() => navigate("/result", {state: trip})}>{trip.arrival}</td>
+                        <td onClick={() => navigate("/result", {state: trip})}>{trip.transport}</td>
+                        <td onClick={() => navigate("/result", {state: trip})}>
                             <strong>{trip.carbon_impact}</strong> kCO2e
                         </td>
                         <td>

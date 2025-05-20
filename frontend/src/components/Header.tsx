@@ -1,21 +1,40 @@
-import { UserCircle } from "lucide-react"; // Import de l'icône
+import {UserCircle} from "lucide-react"; // Import de l'icône
 import styles from "./../assets/styles/header.module.css";
 import EcoTrip from "../assets/images/EcoTrip.png";
-import * as React from "react";
+import {useLocation, useNavigate} from "react-router";
+import {useAuthSession, useLogout} from "../api/auth";
 
+const Header = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const current = location.pathname;
 
-type HeaderProps = {
-    isAuthenticated: boolean;
-}
-const Header: React.FC<HeaderProps> = ({isAuthenticated}) => {
+    const {isAuthenticated, user} = useAuthSession();
+    const logout = useLogout();
+
     return (
         <div className={styles.header}>
-            <img src={EcoTrip} className={styles.logo} alt="EcoTrip logo" />
+            <div className={styles.menuContainer}>
+                {current != "/history" && (
+                    <button className={styles.button} onClick={() => navigate("/history")}>
+                        Historique trajets
+                    </button>
+                )}
+            </div>
+            <img src={EcoTrip} className={styles.logo} alt="EcoTrip logo" onClick={() => {
+                navigate("/");
+            }}/>
             <div className={styles.buttonContainer}>
                 {isAuthenticated ? (
-                    <UserCircle size={40} className={styles.avatarIcon} />
+                    <>
+                        <UserCircle size={40} className={styles.avatarIcon}/>
+                        <span className={styles.userName}>{user?.username}</span>
+                        <button className={styles.deleteButton} onClick={() => logout()}>
+                            Déconnexion
+                        </button>
+                    </>
                 ) : (
-                    <button className={styles.button} onClick={() => alert("Le user veut se connecter !")}>
+                    <button className={styles.button} onClick={() => navigate("/login", {state: {from: current}})}>
                         Connexion
                     </button>
                 )}

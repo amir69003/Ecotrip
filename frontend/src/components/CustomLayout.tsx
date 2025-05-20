@@ -1,16 +1,18 @@
 import React from "react";
-import Header from "./Header";
+import {Header} from "./";
 import styles from "../assets/styles/layout.module.css";
 
-type Props = {
+type CustomLayoutProps = {
     children: React.ReactNode;
 };
 
-export default function Layout({ children }: Props) {
+const CustomLayout: React.FC<CustomLayoutProps> = ({children}) => {
     return (
         <div className={styles.layout}>
-            <Header isAuthenticated={true} />
+            <Header/>
             {children}
         </div>
     );
 }
+
+export default CustomLayout;
