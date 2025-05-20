@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {extractLieu} from "../assets/services/locationService";
-import {fetchOpenStreetMapLocationSuggestions} from "../lib/openStreetMap.ts";
+import {fetchOpenStreetMapLocationSuggestions} from "../lib/openStreetMap";
 import {DetailedLocation, Location} from "../model";
 
 export function useSuggestions(query: string) {

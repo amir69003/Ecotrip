@@ -3,7 +3,7 @@ import EcoTrip from "./../assets/images/EcoTrip.png";
 import styles from "./../assets/styles/register.module.css";
 import {useLocation, useNavigate} from "react-router";
 import RegisterForm from "../components/RegisterForm";
-import {useRegister} from "../lib/auth.ts";
+import {useRegister} from "../lib/auth";
 import {RegisterDTO} from "../model";
 
 const RegisterPage = () => {

@@ -1,4 +1,4 @@
-import {DetailedLocation} from "../model/DetailedLocation.ts";
+import {DetailedLocation} from "../model/DetailedLocation";
 
 export async function fetchOpenStreetMapLocationSuggestions(query: string): Promise<DetailedLocation[]> {
     try {

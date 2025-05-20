@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchRoute } from "../lib/openStreetMap.ts";
+import { fetchRoute } from "../lib/openStreetMap";
 
 export function useItineraryRoute(departure: string, arrival: string) {
     const [coords, setCoords] = useState<[number, number][]>([]);

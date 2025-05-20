@@ -3,7 +3,7 @@ import HistoryTable from "../components/HistoryTable";
 import CustomLayout from "../components/CustomLayout";
 import {Trip} from "../model";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {useAuthSession} from "../lib/auth.ts";
+import {useAuthSession} from "../lib/auth";
 
 function HistoryPage() {
     const {isAuthenticated} = useAuthSession();

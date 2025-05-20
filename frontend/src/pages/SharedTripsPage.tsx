@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchSharedTrips } from "../api/sharedTripsApi";
 import usePagination from "../hooks/usePagination";
 import SharedTripsTable from "../components/SharedTripsTable";
-import Layout from "../components/Layout.tsx";
+import Layout from "../components/Layout";
 
 const USE_FAKE_DATA = true; // Passe à false quand l'API sera prête
 

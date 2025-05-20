@@ -2,7 +2,7 @@ import {UserCircle} from "lucide-react"; // Import de l'icône
 import styles from "./../assets/styles/header.module.css";
 import EcoTrip from "../assets/images/EcoTrip.png";
 import {useLocation, useNavigate} from "react-router";
-import {useAuthSession, useLogout} from "../lib/auth.ts";
+import {useAuthSession, useLogout} from "../lib/auth";
 
 const Header = () => {
     const location = useLocation();
