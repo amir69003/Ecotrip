@@ -9,14 +9,14 @@ function Home() {
     return (
         <CustomLayout>
             <div className={styles.homePage}>
-                <h1 style={{alignContent: "center", marginTop: "10rem"}}>
+                <h1 style={{alignContent: "center", marginTop: "8rem"}}>
                     Avant de partir, jetez un oeil à votre empreinte
                 </h1>
                 <div style={{justifySelf: "center", marginTop: "1rem"}}>
                     <ArrowBigDownDash size={200}/>
 
                 </div>
-                <div style={{justifySelf: "center", marginTop: "5rem"}}>
+                <div style={{justifySelf: "center", marginTop: "3rem"}}>
                     <button onClick={() => navigate("/compute")} className={styles.button}
                             style={{backgroundColor: "white"}}>
                         Commencer à utiliser EcoTrip
