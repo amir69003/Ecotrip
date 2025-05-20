@@ -42,7 +42,7 @@ public class AuthController {
 
     private ResponseEntity<LoginResponse> getAuthResponseEntity(String email, String password) {
         LoginResponse response = authenticateAndGenerateToken(email, password);
-        ResponseCookie cookie = ResponseCookie.from("access_token", response.getAccessToken()).httpOnly(false).secure(true).path("/").maxAge(86400) // 1 day
+        ResponseCookie cookie = ResponseCookie.from("access_token", response.getAccessToken()).httpOnly(false).secure(false).path("/").maxAge(86400) // 1 day
                 .build();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(response);
     }

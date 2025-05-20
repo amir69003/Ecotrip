@@ -1,10 +1,23 @@
 package fr.ecotrip.backend.service;
 
+import fr.ecotrip.backend.exeption.ForbiddenActionException;
+import fr.ecotrip.backend.exeption.NoTrajetsFoundException;
+import fr.ecotrip.backend.exeption.UnauthenticatedUserException;
 import fr.ecotrip.backend.model.Trajet;
+import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.repository.TrajetRepository;
+import fr.ecotrip.backend.security.UserPrincipal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +25,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class TrajetServiceTest {
 
     @Mock
@@ -20,57 +34,133 @@ class TrajetServiceTest {
     @InjectMocks
     private TrajetService trajetService;
 
+    private User testUser;
+    private Trajet testTrajet;
+    private UserPrincipal userPrincipal;
+    private Authentication authentication;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        testUser = User.builder()
+                .id(1L)
+                .username("testuser")
+                .email("test@example.com")
+                .build();
+
+        testTrajet = Trajet.builder()
+                .id(1L)
+                .depart("Paris")
+                .departLatitude(48.8566)
+                .departLongitude(2.3522)
+                .arrivee("Lyon")
+                .arriveeLatitude(45.7578)
+                .arriveeLongitude(4.8320)
+                .moyenTransport("voiture")
+                .kCo2(100.0)
+                .user(testUser)
+                .build();
+
+        userPrincipal = UserPrincipal.builder()
+                .userId(1L)
+                .username("testuser")
+                .email("test@example.com")
+                .password("password")
+                .authorities(List.of(new SimpleGrantedAuthority("ROLE_USER")))
+                .build();
+
+        authentication = new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                userPrincipal, null, userPrincipal.getAuthorities());
     }
 
     @Test
-    void testFindAll() {
-        Trajet trajet1 = new Trajet();
-        Trajet trajet2 = new Trajet();
-        when(trajetRepository.findAll()).thenReturn(Arrays.asList(trajet1, trajet2));
-
-        List<Trajet> result = trajetService.findAll();
-
-        assertEquals(2, result.size());
-        verify(trajetRepository).findAll();
+    void findAll_shouldReturnAllTrajets() {
+        when(trajetRepository.findAll()).thenReturn(Arrays.asList(testTrajet));
+        List<Trajet> trajets = trajetService.findAll();
+        assertEquals(1, trajets.size());
+        assertEquals(testTrajet, trajets.get(0));
     }
 
     @Test
-    void testFindOne_Found() {
-        Trajet trajet = new Trajet();
-        when(trajetRepository.findById(1L)).thenReturn(Optional.of(trajet));
-
-        Trajet result = trajetService.findOne(1L);
-
-        assertNotNull(result);
-        verify(trajetRepository).findById(1L);
+    void findOne_shouldReturnTrajet() {
+        when(trajetRepository.findById(1L)).thenReturn(Optional.of(testTrajet));
+        Trajet found = trajetService.findOne(1L);
+        assertEquals(testTrajet, found);
     }
 
     @Test
-    void testFindOne_NotFound() {
-        when(trajetRepository.findById(999L)).thenReturn(Optional.empty());
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            trajetService.findOne(999L);
-        });
-
-        assertTrue(exception.getMessage().contains("Trajet avec l'ID 999 non trouvé."));
+    void findOne_shouldThrowIfNotFound() {
+        when(trajetRepository.findById(2L)).thenReturn(Optional.empty());
+        assertThrows(NoTrajetsFoundException.class, () -> trajetService.findOne(2L));
     }
 
     @Test
-    void testCreateTrajet() {
-        Trajet trajet = new Trajet();
-        trajetService.createTrajet(trajet);
-
-        verify(trajetRepository).save(trajet);
+    void createTrajet_shouldSaveTrajet() {
+        trajetService.createTrajet(testTrajet);
+        verify(trajetRepository).save(testTrajet);
     }
 
     @Test
-    void testDeleteById() {
-        trajetService.deleteById(5L);
-
-        verify(trajetRepository).deleteById(5L);
+    void findByUserId_shouldReturnUserTrajets() {
+        when(trajetRepository.findAllByUserId(1L)).thenReturn(Arrays.asList(testTrajet));
+        List<Trajet> trajets = trajetService.findByUserId(1L);
+        assertEquals(1, trajets.size());
+        assertEquals(testTrajet, trajets.get(0));
     }
-}
+
+    @Test
+    void findByIdTrajet_shouldReturnTrajet() {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        when(trajetRepository.findById(1L)).thenReturn(Optional.of(testTrajet));
+        
+        Trajet found = trajetService.findByIdTrajet(1L);
+        assertEquals(testTrajet, found);
+    }
+
+    @Test
+    void findByIdTrajet_shouldThrowIfNotAuthenticated() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        assertThrows(UnauthenticatedUserException.class, () -> trajetService.findByIdTrajet(1L));
+    }
+
+    @Test
+    void findByIdTrajet_shouldThrowIfNotFound() {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        when(trajetRepository.findById(2L)).thenReturn(Optional.empty());
+        assertThrows(NoTrajetsFoundException.class, () -> trajetService.findByIdTrajet(2L));
+    }
+
+    @Test
+    void deleteById_shouldDeleteTrajet() {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        when(trajetRepository.findById(1L)).thenReturn(Optional.of(testTrajet));
+        
+        trajetService.deleteById(1L);
+        verify(trajetRepository).deleteById(1L);
+    }
+
+    @Test
+    void deleteById_shouldThrowIfNotAuthenticated() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        assertThrows(UnauthenticatedUserException.class, () -> trajetService.deleteById(1L));
+    }
+
+    @Test
+    void deleteById_shouldThrowIfDeletingOtherUserTrajet() {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        User otherUser = User.builder()
+                .id(2L)
+                .username("otheruser")
+                .email("other@example.com")
+                .build();
+        
+        Trajet otherTrajet = Trajet.builder()
+                .id(2L)
+                .user(otherUser)
+                .build();
+        
+        when(trajetRepository.findById(2L)).thenReturn(Optional.of(otherTrajet));
+        
+        assertThrows(ForbiddenActionException.class, () -> trajetService.deleteById(2L));
+    }
+} 

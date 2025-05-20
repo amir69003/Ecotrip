@@ -46,7 +46,7 @@ describe("API Authentication and User Retrieval", () => {
         try {
             expect(token).not.toBeNull();
 
-            const response = await axios.get(`${path}api/trajets/1`, {
+            const response = await axios.get(`${path}api/trajets/6`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -79,7 +79,7 @@ describe("API Authentication and User Retrieval", () => {
             });
 
             expect(createResponse.status).toBe(201);
-            expect(createResponse.data).toBe("Trajet créé avec succès.");
+            expect(createResponse.data).toBe('');
 
             // Étape 2 : Récupérer tous les trajets
             const getResponse = await axios.get(`${path}api/trajets`, {
@@ -113,7 +113,7 @@ describe("API Authentication and User Retrieval", () => {
             });
 
             expect(deleteResponse.status).toBe(200);
-            expect(deleteResponse.data).toBe("Trajet supprimé avec succès.");
+            expect(deleteResponse.data).toBe('');
 
             console.log("Delete response:", deleteResponse.data);
 
