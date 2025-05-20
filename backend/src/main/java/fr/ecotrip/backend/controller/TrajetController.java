@@ -86,14 +86,6 @@ public class TrajetController {
         );
     }
 
-    @PostMapping("/init")
-    public void initializeCo2() {
-
-        co2Service.initCo2();
-
-        ResponseEntity.ok("Créer");
-    }
-
     @GetMapping("/{id}/communs")
     public ResponseEntity<?> getTrajetsCommuns(@PathVariable Long id) {
         List<TrajetCommunResponse> trajetsCommuns = trajetService.findTrajetsCommuns(id);

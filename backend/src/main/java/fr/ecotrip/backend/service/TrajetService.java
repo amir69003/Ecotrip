@@ -43,11 +43,11 @@ public class TrajetService {
     }
 
     public List<Trajet> findByUserId(Long id) {
-        List<Trajet> trajets = trajetRepository.findAllByUserId(id);
+        /*List<Trajet> trajets = trajetRepository.findAllByUserId(id);
         if (trajets.isEmpty()) {
             throw new NoTrajetsFoundException("Aucun trajet trouvé pour l'utilisateur avec l'ID " + id);
-        }
-        return trajets;
+        }*/
+        return trajetRepository.findAllByUserId(id);
     }
     
     public Trajet findByIdTrajet(Long id) {
