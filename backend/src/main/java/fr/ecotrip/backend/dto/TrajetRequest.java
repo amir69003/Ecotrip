@@ -3,7 +3,6 @@ package fr.ecotrip.backend.dto;
 import io.micrometer.common.lang.NonNullFields;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 
 @Getter
 @Builder

@@ -1,4 +1,3 @@
-// tests/authRouter.spec.js
 import axios from 'axios';
 import { pathLocal, path, idLocal, idVm} from './config.js';
 

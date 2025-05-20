@@ -18,6 +18,7 @@ import fr.ecotrip.backend.exeption.NoTrajetsFoundException;
 import fr.ecotrip.backend.exeption.UnauthenticatedUserException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,10 +44,6 @@ public class TrajetService {
     }
 
     public List<Trajet> findByUserId(Long id) {
-        /*List<Trajet> trajets = trajetRepository.findAllByUserId(id);
-        if (trajets.isEmpty()) {
-            throw new NoTrajetsFoundException("Aucun trajet trouvé pour l'utilisateur avec l'ID " + id);
-        }*/
         return trajetRepository.findAllByUserId(id);
     }
     
@@ -88,7 +85,6 @@ public class TrajetService {
             throw new UnauthenticatedUserException("Utilisateur non authentifié.");
         }
 
-        // Récupérer le trajet de référence
         Trajet trajetReference = findOne(trajetId);
         double distanceTotale = DistanceCalculator.calculateDistance(
                 trajetReference.getDepartLatitude(),
@@ -97,15 +93,12 @@ public class TrajetService {
                 trajetReference.getArriveeLongitude()
         );
 
-        // Calculer la distance maximale acceptable (10% de la distance totale)
         double distanceMaxAcceptable = distanceTotale * 0.1;
 
-        // Récupérer tous les trajets sauf ceux de l'utilisateur actuel
         List<Trajet> tousLesTrajets = trajetRepository.findAll().stream()
                 .filter(t -> !t.getUser().getId().equals(trajetReference.getUser().getId()))
-                .collect(Collectors.toList());
+                .toList();
 
-        // Filtrer les trajets qui sont suffisamment proches
         return tousLesTrajets.stream()
                 .map(trajet -> {
                     double distanceDepart = DistanceCalculator.calculateDistance(
@@ -134,8 +127,8 @@ public class TrajetService {
                     }
                     return null;
                 })
-                .filter(response -> response != null)
-                .collect(Collectors.toList());
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     public List<TrajetCommunResponse> getAllTrajetsCommuns() {
@@ -149,15 +142,12 @@ public class TrajetService {
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         Long userId = principal.getUserId();
 
-        // Récupérer tous les trajets de l'utilisateur connecté
         List<Trajet> trajetsUtilisateur = findByUserId(userId);
 
-        // Récupérer tous les autres trajets
         List<Trajet> autresTrajets = trajetRepository.findAll().stream()
                 .filter(t -> !t.getUser().getId().equals(userId))
-                .collect(Collectors.toList());
+                .toList();
 
-        // Pour chaque trajet de l'utilisateur, trouver les trajets communs
         return trajetsUtilisateur.stream()
                 .flatMap(trajetReference -> {
                     double distanceTotale = DistanceCalculator.calculateDistance(
@@ -197,9 +187,9 @@ public class TrajetService {
                                 }
                                 return null;
                             })
-                            .filter(response -> response != null);
+                            .filter(Objects::nonNull);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

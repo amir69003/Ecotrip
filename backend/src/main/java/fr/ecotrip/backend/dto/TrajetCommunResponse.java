@@ -11,6 +11,6 @@ public class TrajetCommunResponse {
     private Long userId;
     private String username;
     private String email;
-    private Double distanceDepart; // distance en km entre les points de départ
-    private Double distanceArrivee; // distance en km entre les points d'arrivée
+    private Double distanceDepart;
+    private Double distanceArrivee;
 } 

@@ -87,7 +87,6 @@ public class TrajetController {
 
     @GetMapping("/{id}/communs")
     public ResponseEntity<List<TrajetCommunResponse>> getTrajetsCommuns(@PathVariable Long id) {
-        // check if trajet from id belong to user authenticated
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         Long userId = principal.getUserId();

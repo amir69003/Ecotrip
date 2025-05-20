@@ -1,6 +1,5 @@
 package fr.ecotrip.backend.service;
 
-import fr.ecotrip.backend.security.UserPrincipal;
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
 import fr.ecotrip.backend.exeption.ForbiddenActionException;
@@ -10,14 +9,15 @@ import fr.ecotrip.backend.exeption.UserNotFoundException;
 import fr.ecotrip.backend.model.Role;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.repository.UserRepository;
+import fr.ecotrip.backend.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -51,15 +51,13 @@ public class UserService {
         }
 
         Set<Role> roles = new HashSet<>();
-        
+
         if (request.getRoles() != null && !request.getRoles().isEmpty()) {
             boolean tryingToCreateAdmin = request.getRoles().stream()
                     .anyMatch(role -> role == Role.ADMIN);
 
-            if (tryingToCreateAdmin) {
-                if (!request.getEmail().equals("admin@admin.com") && !isAdmin) {
-                    throw new ForbiddenActionException("Seuls les administrateurs peuvent créer des comptes administrateurs.");
-                }
+            if (tryingToCreateAdmin && !request.getEmail().equals("admin@admin.com") && !isAdmin) {
+                throw new ForbiddenActionException("Seuls les administrateurs peuvent créer des comptes administrateurs.");
             }
 
             roles.addAll(request.getRoles());
@@ -95,7 +93,7 @@ public class UserService {
     public UserResponse findUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
-    
+
         return UserResponse.builder()
                 .email(user.getEmail())
                 .username(user.getUsername())
@@ -127,8 +125,8 @@ public class UserService {
         }
 
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
-        
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
+
         if (!principal.getUserId().equals(id)) {
             throw new ForbiddenActionException("Vous ne pouvez modifier que votre propre compte.");
         }
@@ -153,7 +151,7 @@ public class UserService {
         if (request.getRoles() != null && !request.getRoles().isEmpty()) {
             user.setRoles(request.getRoles());
         }
-    
+
         userRepository.save(user);
     }
 }

@@ -34,7 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({label, id, name, value, onChange
         const lieu = selectSuggestion(item);
         const formatted = formatLieu(lieu);
         onChange({target: {name, value: formatted}} as React.ChangeEvent<HTMLInputElement>);
-        clearSuggestions(); // ✨
+        clearSuggestions();
         onLieuSelect(lieu);
     };
 
@@ -59,7 +59,7 @@ const InputField: React.FC<InputFieldProps> = ({label, id, name, value, onChange
                     <div className={styles.suggestionBox}>
                         {suggestions.map((item, i) => (
                             <div
-                                key={i}
+                                key={i + "detailed"}
                                 className={styles.suggestionItem}
                                 onClick={() => handleLieuSelect(item)}
                             >

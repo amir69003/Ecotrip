@@ -4,7 +4,7 @@ import {CustomLayout} from "../components";
 import {ArrowBigDownDash} from "lucide-react";
 
 function Home() {
-    const navigate = useNavigate(); // ← Hook pour naviguer
+    const navigate = useNavigate();
 
     return (
         <CustomLayout>

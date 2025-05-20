@@ -1,6 +1,6 @@
 import {DetailedLocation, Location} from "../model";
 
-const EARTH_RADIUS_KM = 6371; // Earth radius in kilometers
+const EARTH_RADIUS_KM = 6371;
 
 export const computeDistance = (departure: Location | DetailedLocation, arrival: Location | DetailedLocation): number => {
     const toRadians = (degrees: number) => degrees * (Math.PI / 180);

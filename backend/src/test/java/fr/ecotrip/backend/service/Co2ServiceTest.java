@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class Co2ServiceTest {
+class Co2ServiceTest {
 
     @Mock
     private Co2Repository co2Repository;
@@ -27,7 +27,7 @@ public class Co2ServiceTest {
     @Test
     void testGetKco2_WhenIdExists() {
         Long transportId = 1L;
-        double kco2 = 0.104; // ex: 104 g/km → 0.104 kg/km
+        double kco2 = 0.104;
         float km = 10f;
 
         Co2 co2 = Co2.builder().kco2(kco2).transport("bus").build();

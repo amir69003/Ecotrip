@@ -10,8 +10,8 @@ const ChangeView = ({ coords }: ChangeViewProps) => {
 
   useEffect(() => {
     if (coords.length > 0) {
-      const bounds = coords.map(([lat, lng]) => [lat, lng]) as [number, number][];
-      map.fitBounds(bounds);
+      const bounds = coords.map(([lat, lng]) => [lat, lng]);
+      map.fitBounds(bounds as [number, number][]);
     }
   }, [coords, map]);
 

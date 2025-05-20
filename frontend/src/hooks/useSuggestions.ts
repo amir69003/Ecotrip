@@ -10,7 +10,6 @@ export function useSuggestions(query: string) {
     const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [hasSelected, setHasSelected] = useState(false);
 
-    // 🛠 fetchSuggestions mis dans useCallback !
     const fetchSuggestions = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -24,7 +23,6 @@ export function useSuggestions(query: string) {
         }
     }, [query]);
 
-    // Chargement suggestions quand query change
     useEffect(() => {
         if (hasSelected || query.trim().length < 2) {
             setSuggestions([]);
@@ -34,15 +32,14 @@ export function useSuggestions(query: string) {
         if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
 
         debounceTimeout.current = setTimeout(() => {
-            fetchSuggestions(); // ✅ plus de warning
+            fetchSuggestions();
         }, 500);
 
         return () => {
             if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
         };
-    }, [query, hasSelected, fetchSuggestions]); // ✅ Ajout fetchSuggestions ici
+    }, [query, hasSelected, fetchSuggestions]);
 
-    // Nettoyage du timeout du blur
     useEffect(() => {
         return () => {
             if (blurTimeout.current) clearTimeout(blurTimeout.current);

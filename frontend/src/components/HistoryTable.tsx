@@ -39,28 +39,16 @@ const HistoryTable = ({
                 </thead>
                 <tbody>
                 {trips.length > 0 ?
-                    trips.map((trip, index) => (
-                            <tr key={index} className={styles.row}>
+                    trips.map((trip) => (
+                            <tr key={trip.id} className={styles.row}>
                                 <td onClick={() => handleNavigate(trip)}>
                                     <div className={styles.lieu}>
                                         <div>{trip.depart.split(',').slice(0, 4).join(',')}</div>
-                                        {/*{trip.depart.region && (
-                                            <div className={styles.sousTexte}>{trip.depart.region}</div>
-                                        )}
-                                        {trip.depart.pays && (
-                                            <div className={styles.sousTexte}>{trip.depart.pays}</div>
-                                        )}*/}
                                     </div>
                                 </td>
                                 <td onClick={() => handleNavigate(trip)}>
                                     <div className={styles.lieu}>
                                         <div>{trip.arrivee.split(',').slice(0, 4).join(',')}</div>
-                                        {/*{trip.arrivee.region && (
-                                            <div className={styles.sousTexte}>{trip.arrivee.region}</div>
-                                        )}
-                                        {trip.arrivee.pays && (
-                                            <div className={styles.sousTexte}>{trip.arrivee.pays}</div>
-                                        )}*/}
                                     </div>
                                 </td>
                                 <td onClick={() => handleNavigate(trip)}>
