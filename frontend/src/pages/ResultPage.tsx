@@ -2,10 +2,11 @@ import styles from "../assets/styles/result.module.css";
 import Header from "../components/Header";
 import ItineraryMap from "../components/ItineraryMap";
 import {useLocation, useNavigate} from "react-router";
+import { Lieu } from "../assets/types/location"; // Ajoute l'import
 
 type CarbonData = {
-    departure: string;
-    arrival: string;
+    departure: Lieu;
+    arrival: Lieu;
     transport: string;
     carbon_impact: number;
 };
@@ -37,16 +38,26 @@ function ResultPage() {
             <div className={styles.whiteContainer}>
                 <div className={styles.mapResultContainer}>
                     <div className={styles.map}>
-                        <ItineraryMap departure={data.departure} arrival={data.arrival}/>
+                        <ItineraryMap departure={data.departure.displayName} arrival={data.arrival.displayName} />
                     </div>
                     <div className={styles.resultContainer}>
                         <div className={styles.collumData}>
                             <h2>Départ</h2>
-                            <h1>{data.departure}</h1>
+                            <div>
+                                <h1>{data.departure.ville}</h1>
+                                <h2>{data.departure.region}</h2>
+                                <h2>{data.departure.pays}</h2>
+                            </div>
+
                         </div>
                         <div className={styles.collumData}>
                             <h2>Arrivé</h2>
-                            <h1>{data.arrival}</h1>
+                            <div>
+                                <h1>{data.arrival.ville}</h1>
+                                <h2>{data.arrival.region}</h2>
+                                <h2>{data.arrival.pays}</h2>
+                            </div>
+
                         </div>
                         <div className={styles.collumData}>
                             <h2>Transport utilisé</h2>
