@@ -30,7 +30,7 @@ function ResultPage() {
                     arriveeLatitude: trip.arrival.lat,
                     arriveeLongitude: trip.arrival.lon,
                     moyenTransport: transportOptions.find(option => option.id === trip.transport)?.name,
-                    kco2: trip.kCo2
+                    kCo2: trip.kCo2
                 }),
             });
             if (!response.ok) {

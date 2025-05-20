@@ -127,6 +127,7 @@ public class TrajetService {
                                 .trajet(trajet)
                                 .userId(trajet.getUser().getId())
                                 .username(trajet.getUser().getUsername())
+                                .email(trajet.getUser().getEmail())
                                 .distanceDepart(distanceDepart)
                                 .distanceArrivee(distanceArrivee)
                                 .build();
@@ -189,6 +190,7 @@ public class TrajetService {
                                             .trajet(trajet)
                                             .userId(trajet.getUser().getId())
                                             .username(trajet.getUser().getUsername())
+                                            .email(trajet.getUser().getEmail())
                                             .distanceDepart(distanceDepart)
                                             .distanceArrivee(distanceArrivee)
                                             .build();

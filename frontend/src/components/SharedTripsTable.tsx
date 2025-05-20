@@ -1,13 +1,5 @@
 import styles from "../assets/styles/sharedTrip.module.css";
-import { useNavigate } from "react-router-dom";
-
-type SharedTrip = {
-    departure: string;
-    arrival: string;
-    transport: string;
-    carbon_impact: number;
-    email: string;
-};
+import {SharedTrip} from "../model";
 
 type Props = {
     trips: SharedTrip[];
@@ -18,16 +10,14 @@ type Props = {
     onContact: (trip: SharedTrip) => void;
 };
 
-export default function SharedTripsTable({
-    trips,
-    currentPage,
-    goToPage,
-    totalPages,
-    paginationRange,
-    onContact
-}: Props) {
-    const navigate = useNavigate();
-
+const SharedTripsTable = ({
+                              trips,
+                              currentPage,
+                              goToPage,
+                              totalPages,
+                              paginationRange,
+                              onContact
+                          }: Props) => {
     return (
         <div className={styles.container}>
             <table className={styles.table}>
@@ -42,27 +32,33 @@ export default function SharedTripsTable({
                 </tr>
                 </thead>
                 <tbody>
-                {trips.map((trip, index) => (
-                    <tr key={index} className={styles.row}>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.departure}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.arrival}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>{trip.transport}</td>
-                        <td onClick={() => navigate("/result", { state: trip })}>
-                            <strong>{trip.carbon_impact}</strong> kCO2e
-                        </td>
-                        <td>{trip.email}</td>
-                        <td>
-                            <button className={styles.deleteButton} onClick={() => onContact(trip)}>
-                                Contacter
-                            </button>
-                        </td>
-                    </tr>
-                ))}
+                {trips.length > 0 ?
+                    trips.map((trip, index) => (
+                            <tr key={index} className={styles.row}>
+                                <td>{trip.trajet.depart.split(',').slice(0, 4).join(',')}</td>
+                                <td>{trip.trajet.arrivee.split(',').slice(0, 4).join(',')}</td>
+                                <td>{trip.trajet.moyenTransport}</td>
+                                <td><strong>{trip.trajet.kco2}</strong> kCO2e</td>
+                                <td>{trip.email}</td>
+                                <td>
+                                    <button className={styles.deleteButton} onClick={() => onContact(trip)}>
+                                        Contacter
+                                    </button>
+                                </td>
+                            </tr>
+                        )
+                    ) : (
+                        <tr>
+                            <td colSpan={5} className={styles.noData}>
+                                Aucun trajet en commun trouvé
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 
             <div className={styles.pagination}>
-                <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+                <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1 || totalPages === 0}>
                     Page précédente
                 </button>
                 {paginationRange.map((page) => (
@@ -74,10 +70,13 @@ export default function SharedTripsTable({
                         {page}
                     </button>
                 ))}
-                <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                <button onClick={() => goToPage(currentPage + 1)}
+                        disabled={currentPage === totalPages || totalPages === 0}>
                     Page suivante
                 </button>
             </div>
         </div>
     );
-} 
+}
+
+export default SharedTripsTable;

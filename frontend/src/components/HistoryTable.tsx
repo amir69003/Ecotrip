@@ -22,7 +22,7 @@ const HistoryTable = ({
     const navigate = useNavigate();
 
     const handleNavigate = (trip: Trip) => {
-        navigate("/result", {state: trip});
+        navigate(`/shared-trips/${trip.id}`);
     };
 
     return (

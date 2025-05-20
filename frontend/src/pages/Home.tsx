@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router";
 import styles from "../assets/styles/home.module.css";
 import {CustomLayout} from "../components";
+import {ArrowBigDownDash} from "lucide-react";
 
 function Home() {
     const navigate = useNavigate(); // ← Hook pour naviguer
@@ -8,10 +9,19 @@ function Home() {
     return (
         <CustomLayout>
             <div className={styles.homePage}>
-                <p>a remplir description</p>
-                <button onClick={() => navigate("/compute")} className={styles.button}>
-                    Commencer à utiliser EcoTrip
-                </button>
+                <h1 style={{alignContent: "center", marginTop: "10rem"}}>
+                    Avant de partir, jetez un oeil à votre empreinte
+                </h1>
+                <div style={{justifySelf: "center", marginTop: "1rem"}}>
+                    <ArrowBigDownDash size={200}/>
+
+                </div>
+                <div style={{justifySelf: "center", marginTop: "5rem"}}>
+                    <button onClick={() => navigate("/compute")} className={styles.button}
+                            style={{backgroundColor: "white"}}>
+                        Commencer à utiliser EcoTrip
+                    </button>
+                </div>
             </div>
         </CustomLayout>
     )

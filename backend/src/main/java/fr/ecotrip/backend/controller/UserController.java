@@ -40,9 +40,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest request) {
+    public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest request) {
         userService.updateUser(id, request);
-        return ResponseEntity.ok("Utilisateur mis à jour avec succès.");
+        return ResponseEntity.ok().build();
         
     }
 

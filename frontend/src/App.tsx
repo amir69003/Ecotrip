@@ -21,7 +21,7 @@ function App() {
                 <Route path="/compute" element={<ComputePage/>}/>
                 <Route path="/result" element={<ResultPage/>}/>
                 <Route path="/history" element={<ProtectedPage><HistoryPage/></ProtectedPage>}/>
-                <Route path="/shared-trips" element={<ProtectedPage><SharedTripsPage/></ProtectedPage>}/>
+                <Route path="/shared-trips/:id" element={<ProtectedPage><SharedTripsPage/></ProtectedPage>}/>
                 <Route path="/admin/reference" element={<ProtectedPage><AdminReferencePage/></ProtectedPage>}/>
             </Routes>
         </BrowserRouter>

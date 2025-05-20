@@ -1,10 +1,11 @@
-import Layout from "../components/Layout";
+import {CustomLayout} from "../components";
 import ReferenceForm from "../components/ReferenceForm";
 import { useReferenceValues } from "../hooks/useReferenceValues";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styles from "../assets/styles/referenceForm.module.css";
 
 export default function AdminReferencePage() {
+    const navigate = useNavigate();
     const {
         values,
         loading,
@@ -14,14 +15,13 @@ export default function AdminReferencePage() {
         handleChange,
         handleSubmit
     } = useReferenceValues();
-    const navigate = useNavigate();
 
     const handleBack = () => {
         navigate("/calcul");
     };
 
     return (
-        <Layout>
+        <CustomLayout>
             <div className={styles.adminPage}>
                 <ReferenceForm
                     values={values}
@@ -33,6 +33,6 @@ export default function AdminReferencePage() {
                     success={success}
                 />
             </div>
-        </Layout>
+        </CustomLayout>
     );
 } 

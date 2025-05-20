@@ -29,20 +29,20 @@ public class TrajetController {
     private final Co2Service co2Service;
 
     @GetMapping
-    public ResponseEntity<?> getAllTrajets() {
+    public ResponseEntity<List<Trajet>> getAllTrajets() {
         List<Trajet> trajets = trajetService.findAll();
         return ResponseEntity.ok(trajets);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTrajet(@PathVariable Long id) {
+    public ResponseEntity<Trajet> getTrajet(@PathVariable Long id) {
         Trajet trajet = trajetService.findOne(id);
         return ResponseEntity.ok(trajet);
     }
 
 
     @PostMapping
-    public ResponseEntity<?> createTrajet(@RequestBody @Validated TrajetRequest trajetDto) {
+    public ResponseEntity<Void> createTrajet(@RequestBody @Validated TrajetRequest trajetDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
@@ -64,14 +64,13 @@ public class TrajetController {
 
         trajetService.createTrajet(trajet);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Trajet créé avec succès.");
-
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTrajet(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTrajet(@PathVariable Long id) {
         trajetService.deleteById(id);
-        return ResponseEntity.ok("Trajet supprimé avec succès.");
+        return ResponseEntity.ok().build();
     }
 
 
@@ -87,13 +86,21 @@ public class TrajetController {
     }
 
     @GetMapping("/{id}/communs")
-    public ResponseEntity<?> getTrajetsCommuns(@PathVariable Long id) {
+    public ResponseEntity<List<TrajetCommunResponse>> getTrajetsCommuns(@PathVariable Long id) {
+        // check if trajet from id belong to user authenticated
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        Long userId = principal.getUserId();
+        Trajet trajet = trajetService.findOne(id);
+        if (!trajet.getUser().getId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         List<TrajetCommunResponse> trajetsCommuns = trajetService.findTrajetsCommuns(id);
         return ResponseEntity.ok(trajetsCommuns);
     }
 
     @GetMapping("/communs")
-    public ResponseEntity<?> getAllTrajetsCommuns() {
+    public ResponseEntity<List<TrajetCommunResponse>> getAllTrajetsCommuns() {
         List<TrajetCommunResponse> trajetsCommuns = trajetService.getAllTrajetsCommuns();
         return ResponseEntity.ok(trajetsCommuns);
     }
