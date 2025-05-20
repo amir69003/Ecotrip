@@ -1,7 +1,7 @@
 package fr.ecotrip.backend.service;
 
 import fr.ecotrip.backend.model.Co2;
-import fr.ecotrip.backend.repositories.Co2Repository;
+import fr.ecotrip.backend.repository.Co2Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

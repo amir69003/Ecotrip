@@ -1,7 +1,7 @@
 package fr.ecotrip.backend.service;
 
 import fr.ecotrip.backend.model.Trajet;
-import fr.ecotrip.backend.repositories.TrajetRepository;
+import fr.ecotrip.backend.repository.TrajetRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

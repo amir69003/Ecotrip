@@ -42,3 +42,30 @@
     transform: scale(1.1);
 }
 
+.transportButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.transportButton {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 2px solid #005f00;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #005f00;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.transportButton:hover {
+    background-color: #b0ffaa;
+}
+
+.active {
+    background-color: #005f00;
+    color: #ffffff;
+}

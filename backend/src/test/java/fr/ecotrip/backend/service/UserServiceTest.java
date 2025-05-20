@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.model.User;
-import fr.ecotrip.backend.repositories.UserRepository;
+import fr.ecotrip.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

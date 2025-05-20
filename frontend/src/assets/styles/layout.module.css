@@ -7,7 +7,7 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    background: linear-gradient(to bottom, #f9f9f9, #dff7df);
+    background: linear-gradient(to bottom, #ffffff, #B0FFAA);
     display: flex;
     flex-direction: column;
     align-items: center;

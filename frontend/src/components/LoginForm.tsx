@@ -1,27 +1,39 @@
 import * as React from "react";
-import styles from "../assets/styles/home.module.css";
+import styles from "../assets/styles/login.module.css";
 import {LockKeyhole, User} from "lucide-react";
+import {LoginDTO} from "../model";
 
 type LoginFormProps = {
-    loginData : { email: string, password: string };
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSubmit: (e: React.FormEvent) => void;
-
+    isLoading: boolean;
+    error: Error | null;
+    formData: LoginDTO;
+    handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    handleSubmit: React.FormEventHandler<HTMLFormElement>;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ loginData , handleChange, handleSubmit}) =>{
+const LoginForm: React.FC<LoginFormProps> = ({isLoading, error, formData, handleChange, handleSubmit}) => {
+
+    if (isLoading) {
+        return (
+            <div className={styles.loadingContainer}>
+                <h1 className={styles.title}>Loading...</h1>
+            </div>
+        )
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <h1 className={styles.title}>Connexion</h1>
+            {error && <p className={styles.error}>{error.message}</p>}
             <div>
                 <h2 className={styles.info}>Email</h2>
                 <div className={styles.inputContainer}>
-                    <User />
+                    <User/>
                     <input
                         type="email"
                         id="email"
                         name="email"
-                        value={loginData.email}
+                        value={formData.email}
                         onChange={handleChange}
                         className={styles.input}
                         required
@@ -31,13 +43,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ loginData , handleChange, handleS
             <div>
                 <h2 className={styles.info}>Mots de passe</h2>
                 <div className={styles.inputContainer}>
-                    <LockKeyhole />
+                    <LockKeyhole/>
                     <input
                         className={styles.input}
                         type="password"
                         id="password"
                         name="password"
-                        value={loginData.password}
+                        value={formData.password}
                         onChange={handleChange}
                         required
                     />
@@ -47,4 +59,5 @@ const LoginForm: React.FC<LoginFormProps> = ({ loginData , handleChange, handleS
         </form>
     )
 }
+
 export default LoginForm;
