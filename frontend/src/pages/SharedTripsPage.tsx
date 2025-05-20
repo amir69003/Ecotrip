@@ -13,7 +13,7 @@ function SharedTripsPage() {
     const {data, isError, error, isLoading} = useQuery({
         queryKey: ["sharedTrips"],
         queryFn: async () => {
-            const response = await fetch(`http://127.0.0.1:8080/api/trajets/${id}/communs`,
+            const response = await fetch(`/api/trajets/${id}/communs`,
                 {
                     method: "GET",
                     credentials: "include",
@@ -25,8 +25,6 @@ function SharedTripsPage() {
         },
         enabled: !!isAuthenticated,
     });
-
-    console.log(data);
 
     const {currentData, currentPage, goToPage, totalPages, paginationRange} = usePagination(data ?? [], 7);
 

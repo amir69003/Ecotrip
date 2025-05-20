@@ -44,7 +44,7 @@ function ComputePage() {
                 }
                 distanceKm = Math.round(data.routes[0].distance / 1000);
             }
-            const response = await fetch(`http://127.0.0.1:8080/api/trajets/${selectedTransport}/${distanceKm}`, {credentials: 'include'});
+            const response = await fetch(`/api/trajets/${selectedTransport}/${distanceKm}`, {credentials: 'include'});
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

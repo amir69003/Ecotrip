@@ -17,7 +17,7 @@ export default function AdminReferencePage() {
         queryFn: async () => {
             const result: CO2Reference[] = [];
             for (let i = 1; i < transportOptions.length + 1; i++) {
-                const response = await fetch(`http://127.0.0.1:8080/api/co2s/${i}`, {
+                const response = await fetch(`/api/co2s/${i}`, {
                     method: "GET",
                     credentials: "include"
                 });
@@ -34,7 +34,7 @@ export default function AdminReferencePage() {
 
     const {isError: isPatchError, error: patchError, isPending, mutate} = useMutation({
         mutationFn: async (ref: CO2Reference) => {
-            const response = await fetch(`http://127.0.0.1:8080/api/co2s/${ref.id}`, {
+            const response = await fetch(`/api/co2s/${ref.id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

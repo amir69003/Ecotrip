@@ -11,7 +11,7 @@ function HistoryPage() {
     const {data, isError, error, isLoading, refetch} = useQuery({
         queryKey: ["trips"],
         queryFn: async () => {
-            const response = await fetch("http://127.0.0.1:8080/api/users/trajets", {
+            const response = await fetch("/api/users/trajets", {
                 method: "GET",
                 credentials: "include"
             });
@@ -26,7 +26,7 @@ function HistoryPage() {
 
     const {mutate, error: deteleError, isPending: isDeletePending} = useMutation({
         mutationFn: async (tripToDelete: Trip) => {
-            const response = await fetch(`http://127.0.0.1:8080/api/trajets/${tripToDelete.id}`, {
+            const response = await fetch(`/api/trajets/${tripToDelete.id}`, {
                 method: "DELETE",
                 credentials: "include"
             });
@@ -48,15 +48,15 @@ function HistoryPage() {
     return (
         <CustomLayout>
             {isLoading || isDeletePending ? (
-                <div className="flex justify-center items-center h-screen">
-                    <p className="text-2xl">Loading...</p>
+                <div>
+                    <p>Loading...</p>
                 </div>
             ) : (
                 <>
                     {isError || deteleError || error ? (
-                        <div className="flex justify-center items-center h-screen">
-                            <p className="text-2xl text-red-500">Erreur : {error?.message || deteleError?.message}</p>
-                            <p className="text-2xl text-red-500">Raffraichissez la page</p>
+                        <div>
+                            <p>Erreur : {error?.message ?? deteleError?.message}</p>
+                            <p>Raffraichissez la page</p>
                         </div>
                     ) : (
                         <HistoryTable

@@ -10,7 +10,7 @@ export const useLogin = () => {
 
     return useMutation({
         mutationFn: async ({email, password}: LoginDTO) => {
-            const response = await fetch('http://127.0.0.1:8080/api/auth/login', {
+            const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include',
@@ -49,7 +49,7 @@ export const useRegister = () => {
     return useMutation({
         mutationFn: async ({username, email, password, confirmPassword}: RegisterDTO) => {
             if (password !== confirmPassword) throw new Error('Passwords do not match');
-            const response = await fetch('http://127.0.0.1:8080/api/auth/register', {
+            const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include',

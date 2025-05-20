@@ -34,7 +34,7 @@ const SharedTripsTable = ({
                 <tbody>
                 {trips.length > 0 ?
                     trips.map((trip, index) => (
-                            <tr key={index} className={styles.row}>
+                            <tr key={index + trip.trajet.id} className={styles.row}>
                                 <td>{trip.trajet.depart.split(',').slice(0, 4).join(',')}</td>
                                 <td>{trip.trajet.arrivee.split(',').slice(0, 4).join(',')}</td>
                                 <td>{trip.trajet.moyenTransport}</td>

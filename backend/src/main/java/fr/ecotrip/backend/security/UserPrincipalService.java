@@ -26,7 +26,7 @@ public class UserPrincipalService implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
-                .collect(Collectors.toList());
+                .toList();
 
         return UserPrincipal
                 .builder()

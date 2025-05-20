@@ -31,9 +31,7 @@ public class Co2Service {
 
     @Transactional
     public void initCo2() {
-        // delete all existing records
         co2Repository.deleteAll();
-        // reset auto-increment
         entityManager.createNativeQuery("ALTER SEQUENCE co2_id_seq RESTART WITH 1;").executeUpdate();
 
         Co2 velo = Co2.builder()
