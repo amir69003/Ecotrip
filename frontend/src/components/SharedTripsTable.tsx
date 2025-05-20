@@ -49,7 +49,7 @@ const SharedTripsTable = ({
                         )
                     ) : (
                         <tr>
-                            <td colSpan={5} className={styles.noData}>
+                            <td colSpan={6} className={styles.noData}>
                                 Aucun trajet en commun trouvé
                             </td>
                         </tr>

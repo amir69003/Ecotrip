@@ -98,6 +98,7 @@ button:disabled {
         padding: 0.5rem 1rem;
     }
 }
+
 .deleteButton {
     background: #0d6efd;
     color: white;
@@ -111,4 +112,8 @@ button:disabled {
 
 .deleteButton:hover {
     transform: scale(1.05);
+}
+
+.noData {
+    text-align: center !important;
 }
