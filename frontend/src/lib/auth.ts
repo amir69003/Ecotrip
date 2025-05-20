@@ -1,6 +1,7 @@
 import {useMutation} from '@tanstack/react-query'
 import {AuthContextType, AuthUser, LoginDTO, RegisterDTO} from "../model";
 import {createContext, useContext} from "react";
+import {useCookies} from "react-cookie";
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -32,8 +33,10 @@ export const useLogin = () => {
 export const useLogout = () => {
     const ctx = useContext(AuthContext);
     if (!ctx) throw new Error("useLogout must be used within AuthProvider");
+    const [, , removeCookie] = useCookies(['access_token']);
 
     return () => {
+        removeCookie('access_token');
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         localStorage.removeItem("roles");
