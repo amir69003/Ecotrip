@@ -8,6 +8,8 @@ import ComputePage from "./pages/ComputePage";
 import ResultPage from "./pages/ResultPage";
 import HistoryPage from "./pages/HistoryPage";
 import ProtectedPage from "./pages/ProtectedPage";
+import SharedTripsPage from "./pages/SharedTripsPage";
+import AdminReferencePage from "./pages/AdminReferencePage";
 
 function App() {
     return (
@@ -19,6 +21,8 @@ function App() {
                 <Route path="/compute" element={<ComputePage/>}/>
                 <Route path="/result" element={<ResultPage/>}/>
                 <Route path="/history" element={<ProtectedPage><HistoryPage/></ProtectedPage>}/>
+                <Route path="/shared-trips" element={<ProtectedPage><SharedTripsPage/></ProtectedPage>}/>
+                <Route path="/admin/reference" element={<ProtectedPage><AdminReferencePage/></ProtectedPage>}/>
             </Routes>
         </BrowserRouter>
     )

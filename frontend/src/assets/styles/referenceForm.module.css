@@ -1,0 +1,105 @@
+@font-face {
+    font-family: 'League Spartan';
+    src: url('./../fonts/LeagueSpartan.ttf');
+}
+
+.formContainer {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    color: #1a501a;
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    font-family: 'League Spartan', serif;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
+.label {
+    flex: 1;
+    color: #555;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 0.7rem;
+    border-radius: 0.7rem;
+    border: 1px solid #d2ffd2;
+    background: #eaffea;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a501a;
+    outline: none;
+}
+
+.buttonRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+.button {
+    background: #B0FFAA;
+    color: #1a501a;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 0.7rem 2.2rem;
+    border-radius: 0.7rem;
+}
+
+.button:disabled {
+    background: #ccc;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.error {
+    color: red;
+    margin-top: 16px;
+}
+
+.success {
+    color: green;
+    margin-top: 16px;
+}
+
+.adminPage {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+} 
