@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styles from "../assets/styles/history.module.css";
 import { Trip } from "../assets/types/trip.ts";
 
