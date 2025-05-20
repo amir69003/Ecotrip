@@ -39,7 +39,8 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         return path.equals("/") ||
                 path.equals("/auth/login") ||
-                path.equals("/auth/register");
+                path.equals("/auth/register") ||
+                path.matches("/trajets/\\d+/\\d+");
     }
 
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
