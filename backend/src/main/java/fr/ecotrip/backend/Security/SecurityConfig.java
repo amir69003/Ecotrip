@@ -15,6 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration de la sécurité de l'application.
+ * Définit les règles de sécurité, les filtres d'authentification et les autorisations
+ * pour les différentes routes de l'API.
+ */
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -35,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(form -> form.disable())
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // ← ici
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/",

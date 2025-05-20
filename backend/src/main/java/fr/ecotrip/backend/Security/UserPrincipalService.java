@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service de gestion des utilisateurs authentifiés.
+ * Implémente UserDetailsService pour charger les détails des utilisateurs
+ * lors de l'authentification.
+ */
 @Component
 @RequiredArgsConstructor
 public class UserPrincipalService implements UserDetailsService {

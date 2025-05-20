@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * Point d'entrée personnalisé pour la gestion des erreurs d'authentification.
+ * Gère les réponses HTTP en cas d'échec d'authentification ou d'accès non autorisé.
+ */
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

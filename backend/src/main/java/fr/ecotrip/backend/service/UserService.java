@@ -23,6 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Service de gestion des utilisateurs.
+ * Fournit les méthodes pour la création, la modification, la suppression et la consultation des utilisateurs,
+ * ainsi que la gestion des rôles et des autorisations.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -30,6 +35,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    /**
+     * Crée un nouvel utilisateur.
+     * @param request Les informations de l'utilisateur à créer
+     * @throws ForbiddenActionException si l'email ou le nom d'utilisateur existe déjà
+     */
     public void createUser(UserRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
@@ -77,6 +87,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Récupère tous les utilisateurs.
+     * @return Liste de tous les utilisateurs
+     * @throws InternalServerErrorException en cas d'erreur lors de la récupération
+     */
     public List<UserResponse> findAll() {
         try {
             return userRepository.findAll()
@@ -92,6 +107,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Récupère un utilisateur par son ID.
+     * @param id ID de l'utilisateur
+     * @return Les informations de l'utilisateur
+     * @throws UsernameNotFoundException si l'utilisateur n'est pas trouvé
+     */
     public UserResponse findUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
@@ -103,10 +124,22 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * Récupère un utilisateur par son email.
+     * @param email Email de l'utilisateur
+     * @return L'utilisateur correspondant
+     */
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
+    /**
+     * Récupère un utilisateur par son ID avec vérification de l'authentification.
+     * @param id ID de l'utilisateur
+     * @return L'utilisateur correspondant
+     * @throws UnauthenticatedUserException si l'utilisateur n'est pas authentifié
+     * @throws UserNotFoundException si l'utilisateur n'est pas trouvé
+     */
     public User findById(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -119,6 +152,14 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("Utilisateur avec l'ID " + id + " non trouvé."));
     }
 
+    /**
+     * Met à jour les informations d'un utilisateur.
+     * @param id ID de l'utilisateur à mettre à jour
+     * @param request Nouvelles informations de l'utilisateur
+     * @throws UnauthenticatedUserException si l'utilisateur n'est pas authentifié
+     * @throws ForbiddenActionException si l'utilisateur n'est pas autorisé à modifier le compte
+     * @throws UsernameNotFoundException si l'utilisateur n'est pas trouvé
+     */
     public void updateUser(Long id, UserRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

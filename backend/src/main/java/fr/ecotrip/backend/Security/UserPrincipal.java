@@ -8,7 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-
+/**
+ * Classe représentant les informations principales d'un utilisateur authentifié.
+ * Implémente UserDetails pour fournir les informations nécessaires à Spring Security
+ * lors de l'authentification et de l'autorisation.
+ */
 @Getter
 @Builder
 public class UserPrincipal implements UserDetails {

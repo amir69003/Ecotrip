@@ -12,10 +12,8 @@ import java.util.List;
 
 /**
  * Composant responsable de la génération de tokens JWT.
- * <p>
  * Ce composant crée des tokens contenant l'identifiant utilisateur, l'email et les rôles.
  * Les tokens sont signés avec une clé secrète en utilisant l'algorithme HMAC256.
- * </p>
  */
 @Component
 @RequiredArgsConstructor
@@ -28,15 +26,7 @@ public class JwtIssuer {
 
     /**
      * Génère un token JWT avec les informations de l'utilisateur.
-     * <p>
-     * Le token contient les claims suivants :
-     * <ul>
-     *     <li><strong>sub</strong> : l'identifiant de l'utilisateur</li>
-     *     <li><strong>email</strong> : l'adresse e-mail de l'utilisateur</li>
-     *     <li><strong>role</strong> : la liste des rôles attribués</li>
-     * </ul>
      * Il expire après 24 heures.
-     * </p>
      *
      * @param userId L'identifiant unique de l'utilisateur
      * @param email  L'adresse email de l'utilisateur

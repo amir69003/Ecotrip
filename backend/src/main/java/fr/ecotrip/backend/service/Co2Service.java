@@ -6,7 +6,11 @@ import fr.ecotrip.backend.repositories.Co2Repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Service de gestion des émissions de CO2.
+ * Fournit les méthodes pour le calcul et la gestion des émissions de CO2
+ * pour différents moyens de transport.
+ */
 @Service
 @RequiredArgsConstructor
 public class Co2Service {
@@ -19,18 +23,26 @@ public class Co2Service {
                 .orElse(-1.0);
     }
 
-        public Double getKco2(Long id, float km) {
-        Double kco2ParKm = getKco2_1(id);
+    /**
+     * Récupère la quantité de CO2 émise pour un moyen de transport et une distance donnés.
+     * @param moyenTransportId ID du moyen de transport
+     * @param km Distance en kilomètres
+     * @return Quantité de CO2 émise en kg
+     */
+    public Double getKco2(Long moyenTransportId, float km) {
+        Double kco2ParKm = getKco2_1(moyenTransportId);
 
         if (kco2ParKm == null || kco2ParKm <= -1.) {
                 throw new InvalidTransportException("Moyen de transport introuvable ou valeur non valide");
         }
 
         return km * kco2ParKm;
-        }
+    }
 
-
-
+    /**
+     * Initialise les données de CO2 pour les différents moyens de transport.
+     * Crée les entrées de base pour le calcul des émissions de CO2.
+     */
     public void initCo2() {
         Co2 bus =
                 Co2

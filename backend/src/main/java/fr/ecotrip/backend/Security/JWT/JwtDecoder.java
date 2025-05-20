@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Composant chargé de décoder les tokens JWT.
- * <p>
  * Utilise la bibliothèque Auth0 pour effectuer la vérification à l'aide de l'algorithme HMAC256
  * et la clé secrète définie dans les propriétés de l'application.
- * </p>
  */
 @Component
 @RequiredArgsConstructor

@@ -9,10 +9,8 @@ import java.util.List;
 
 /**
  * Composant chargé de convertir un token JWT décodé en un objet {@link UserPrincipal}.
- * <p>
  * Il extrait les informations nécessaires du token, telles que l'ID utilisateur, l'email,
  * et les rôles, puis les encapsule dans une instance de {@link UserPrincipal}.
- * </p>
  */
 @Component
 public class JwtToPrincipalConverter {
@@ -33,9 +31,7 @@ public class JwtToPrincipalConverter {
 
     /**
      * Extrait la liste des rôles (autorisations) depuis la claim "role" du JWT.
-     * <p>
      * Si la claim est absente ou nulle, une liste vide est retournée.
-     * </p>
      *
      * @param jwt Le token JWT décodé
      * @return Une liste de {@link SimpleGrantedAuthority}

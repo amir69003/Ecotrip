@@ -7,6 +7,10 @@ import lombok.Getter;
 
 import java.util.Set;
 
+/**
+ * DTO représentant la requête pour la création ou la modification d'un utilisateur.
+ * Cette classe contient les informations nécessaires pour créer ou modifier un utilisateur.
+ */
 @Data
 @Getter
 @Builder

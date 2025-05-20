@@ -8,6 +8,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Entité représentant un utilisateur dans le système.
+ * Cette classe contient les informations d'un utilisateur, incluant ses identifiants,
+ * ses rôles et la liste de ses trajets.
+ */
 @Entity
 @Getter
 @Setter

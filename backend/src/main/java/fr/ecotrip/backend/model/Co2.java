@@ -1,6 +1,5 @@
 package fr.ecotrip.backend.model;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entité représentant les émissions de CO2 pour un moyen de transport.
+ * Cette classe stocke les informations sur les émissions de CO2 par type de transport.
+ */
 @Entity
 @Getter
 @Setter

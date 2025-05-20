@@ -13,6 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entité représentant un trajet dans le système.
+ * Cette classe contient les informations d'un trajet, incluant les points de départ et d'arrivée,
+ * leurs coordonnées géographiques, le moyen de transport utilisé et les émissions de CO2 associées.
+ */
 @Entity
 @Getter
 @Setter

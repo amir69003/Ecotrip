@@ -16,14 +16,8 @@ import java.util.Optional;
 
 /**
  * Filtre d'authentification JWT pour les requêtes HTTP.
- * <p>
- * Ce filtre est exécuté une seule fois par requête (grâce à {@link OncePerRequestFilter}).
  * Il extrait le token JWT depuis l'en-tête "Authorization", le décode, puis crée
  * un {@link UserPrincipalAuthentificationToken} qui est injecté dans le {@link SecurityContextHolder}.
- * </p>
- *
- * <p>Utilise {@link JwtDecoder} pour décoder le JWT et {@link JwtToPrincipalConverter} pour
- * transformer le JWT en principal utilisateur.</p>
  *
  */
 @Component
@@ -42,10 +36,8 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
     /**
      * Exécute le filtre pour chaque requête HTTP.
-     * <p>
      * Ce filtre tente d'extraire un token JWT depuis la requête,
-     * puis d'en extraire un principal utilisateur et de l'ajouter au contexte de sécurité.
-     * </p>
+     * puis d'en extraire un  utilisateur et de l'ajouter au contexte de sécurité.
      *
      * @param request     La requête HTTP entrante
      * @param response    La réponse HTTP
@@ -67,9 +59,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
     /**
      * Extrait le token JWT du header "Authorization" de la requête HTTP.
-     * <p>
      * Le token doit être au format "Bearer [token]". Si ce n'est pas le cas, un {@link Optional} vide est retourné.
-     * </p>
      *
      * @param request La requête HTTP contenant éventuellement un header Authorization
      * @return Un {@link Optional} contenant le token sans le préfixe "Bearer ", ou vide si invalide/absent
