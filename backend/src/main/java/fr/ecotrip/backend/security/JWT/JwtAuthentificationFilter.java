@@ -1,6 +1,6 @@
-package fr.ecotrip.backend.Security.JWT;
+package fr.ecotrip.backend.security.JWT;
 
-import fr.ecotrip.backend.Security.UserPrincipalAuthentificationToken;
+import fr.ecotrip.backend.security.UserPrincipalAuthentificationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

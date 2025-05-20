@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.Security.JWT;
+package fr.ecotrip.backend.security.JWT;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

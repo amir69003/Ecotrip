@@ -1,7 +1,7 @@
-package fr.ecotrip.backend.Security.JWT;
+package fr.ecotrip.backend.security.JWT;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import fr.ecotrip.backend.Security.UserPrincipal;
+import fr.ecotrip.backend.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 

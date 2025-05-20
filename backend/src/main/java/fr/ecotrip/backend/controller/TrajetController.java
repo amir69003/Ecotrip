@@ -1,6 +1,6 @@
-package fr.ecotrip.backend.controllers;
+package fr.ecotrip.backend.controller;
 
-import fr.ecotrip.backend.Security.UserPrincipal;
+import fr.ecotrip.backend.security.UserPrincipal;
 import fr.ecotrip.backend.dto.KCo2Response;
 import fr.ecotrip.backend.dto.TrajetRequest;
 import fr.ecotrip.backend.model.Trajet;

@@ -2,7 +2,7 @@ package fr.ecotrip.backend.service;
 
 
 import fr.ecotrip.backend.model.Trajet;
-import fr.ecotrip.backend.repositories.TrajetRepository;
+import fr.ecotrip.backend.repository.TrajetRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import fr.ecotrip.backend.Security.UserPrincipal;
+import fr.ecotrip.backend.security.UserPrincipal;
 import fr.ecotrip.backend.exeption.ForbiddenActionException;
 import fr.ecotrip.backend.exeption.NoTrajetsFoundException;
 import fr.ecotrip.backend.exeption.UnauthenticatedUserException;

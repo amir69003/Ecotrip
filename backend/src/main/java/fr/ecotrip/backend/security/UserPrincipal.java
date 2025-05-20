@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.Security;
+package fr.ecotrip.backend.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -14,6 +14,7 @@ import java.util.Collection;
 public class UserPrincipal implements UserDetails {
 
     private final Long userId;
+    private final String username;
     private final String email;
     @JsonIgnore
     private final String password;
@@ -26,13 +27,13 @@ public class UserPrincipal implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
+    public String getUsername() {
+        return username;
     }
 
     @Override
-    public String getUsername() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.repositories;
+package fr.ecotrip.backend.repository;
 
 import fr.ecotrip.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

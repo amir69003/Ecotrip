@@ -1,11 +1,10 @@
-package fr.ecotrip.backend.Security;
+package fr.ecotrip.backend.security;
 
 
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -28,6 +27,7 @@ public class UserPrincipalService implements UserDetailsService {
         return UserPrincipal
                 .builder()
                 .userId(user.getId())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .authorities(List.of(new SimpleGrantedAuthority(user.getRole())))
                 .password(user.getPassword())

@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.Security.JWT;
+package fr.ecotrip.backend.security.JWT;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package fr.ecotrip.backend.service;
 
-import fr.ecotrip.backend.Security.UserPrincipal;
+import fr.ecotrip.backend.security.UserPrincipal;
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.dto.UserResponse;
 import fr.ecotrip.backend.exeption.ForbiddenActionException;
@@ -8,7 +8,7 @@ import fr.ecotrip.backend.exeption.InternalServerErrorException;
 import fr.ecotrip.backend.exeption.UnauthenticatedUserException;
 import fr.ecotrip.backend.exeption.UserNotFoundException;
 import fr.ecotrip.backend.model.User;
-import fr.ecotrip.backend.repositories.UserRepository;
+import fr.ecotrip.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

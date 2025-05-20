@@ -1,4 +1,4 @@
-package fr.ecotrip.backend.Security;
+package fr.ecotrip.backend.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
