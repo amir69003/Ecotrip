@@ -13,7 +13,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/**") // ou "/api/**" si tu préfères restreindre
+                registry.addMapping("/**")
                         .allowedOrigins("http://127.0.0.1:5173", "http://127.0.0.1", "http://192.168.75.123", "http://192.168.75.123:5173")
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

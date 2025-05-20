@@ -14,7 +14,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Conteneur central blanc */
 .whiteContainer {
     background: white;
     border-radius: 1.5rem;
@@ -29,7 +28,6 @@
     margin-top: 2rem;
 }
 
-/* Carte à gauche / Résultats à droite */
 .mapResultContainer {
     display: flex;
     flex-direction: row;
@@ -39,7 +37,6 @@
     width: 100%;
 }
 
-/* Map : prend la moitié gauche */
 .map {
     flex: 1;
     height: 100%;
@@ -49,7 +46,6 @@
     aspect-ratio: 1 / 1;
 }
 
-/* Résultats à droite */
 .resultContainer {
     flex: 1;
     display: flex;
@@ -58,7 +54,6 @@
     gap: 1.5rem;
 }
 
-/* Bloc texte */
 .collumData h2 {
     font-size: 0.9rem;
     font-weight: bold;
@@ -73,7 +68,6 @@
     margin: 0;
 }
 
-/* Impact carbone */
 .rowData {
     display: flex;
     align-items: baseline;
@@ -94,7 +88,6 @@
     margin: 0;
 }
 
-/* Boutons */
 .rowButton {
     display: flex;
     justify-content: center;
@@ -150,10 +143,6 @@
     text-align: center;
 }
 
-
-
-
-/* Responsive : mobile */
 @media (max-width: 768px) {
     .mapResultContainer {
         flex-direction: column;

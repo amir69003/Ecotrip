@@ -2,7 +2,7 @@ import {MapContainer, Polyline, TileLayer} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import ChangeView from "./ChangeView";
 import {useItineraryRoute} from "../hooks/useItineraryRoute";
-import styles from "../assets/styles/result.module.css"; // 👈 ajout du module CSS
+import styles from "../assets/styles/result.module.css";
 
 type ItineraryMapProps = {
     departure: string;
@@ -11,10 +11,6 @@ type ItineraryMapProps = {
 
 const ItineraryMap = ({departure, arrival}: ItineraryMapProps) => {
     const {coords, error, loading} = useItineraryRoute(departure, arrival);
-
-    if (error) {
-        console.warn(error)
-    }
 
     return (
         <div className={styles.mapContainer}>

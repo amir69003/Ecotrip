@@ -1,6 +1,6 @@
 package fr.ecotrip.backend.security;
 
-import fr.ecotrip.backend.security.JWT.JwtAuthentificationFilter;
+import fr.ecotrip.backend.security.jwt.JwtAuthentificationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
@@ -32,23 +32,26 @@ public class SecurityConfig {
 
         httpSecurity.addFilterBefore(jwtAuthentificationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        String adminRoleName = "ADMIN";
+
         return httpSecurity
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // ← ici
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/",
                                 "/auth/login",
                                 "/auth/register",
+                                "/trajets/*/*",
                                 "/swagger-ui/**",
                                 "/v3/api-docs*/**").permitAll()
-                        .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/trajets/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/co2s/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/users/**").hasAnyRole("USER", adminRoleName)
+                        .requestMatchers("/trajets/**").hasAnyRole("USER", adminRoleName)
+                        .requestMatchers("/co2s/**").hasAnyRole(adminRoleName)
                         .anyRequest().authenticated()
                 )
                 .build();

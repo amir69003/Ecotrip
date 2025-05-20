@@ -13,8 +13,8 @@ export default function ReferenceForm({values, onChange, onSubmit}: ReferenceFor
         <form onSubmit={onSubmit} className={styles.formContainer}>
             <h1 className={styles.title}>Référence kCO2/km</h1>
             <div className={styles.fields}>
-                {values.map((ref, index) => (
-                    <div key={index} className={styles.row}>
+                {values.map((ref) => (
+                    <div key={ref.id} className={styles.row}>
                         <label className={styles.label}>{ref.transport}
                             <input type="number" min="0" step="any" name={ref.id.toString()} value={ref.kCo2}
                                    onChange={onChange} className={styles.input} required/>

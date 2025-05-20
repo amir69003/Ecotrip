@@ -16,8 +16,6 @@ public class DataInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        // Initialize the database with CO2 data
         co2Service.initCo2();
-        // You can add more initialization logic here if needed
     }
 }

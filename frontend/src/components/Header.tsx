@@ -1,4 +1,4 @@
-import {UserCircle} from "lucide-react"; // Import de l'icône
+import {UserCircle} from "lucide-react";
 import styles from "./../assets/styles/header.module.css";
 import EcoTrip from "../assets/images/EcoTrip.png";
 import {useLocation, useNavigate} from "react-router";

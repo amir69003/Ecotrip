@@ -1,6 +1,6 @@
 
 export type DetailedLocation = {
-    display_name: string; // Le nom affiché (ex : "Lyon, Rhône, France")
+    display_name: string;
     lat: number;
     lon: number;
     address?: {

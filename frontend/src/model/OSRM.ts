@@ -11,7 +11,7 @@ export interface OSRMRoute {
 }
 
 export interface OSRMLeg {
-    steps: unknown[]; // or define OSRMStep[] if using `steps=true`
+    steps: unknown[];
     weight: number;
     summary: string;
     duration: number;
@@ -20,7 +20,7 @@ export interface OSRMLeg {
 
 export interface OSRMWaypoint {
     hint: string;
-    location: [number, number]; // [longitude, latitude]
+    location: [number, number];
     name: string;
     distance: number;
 }

@@ -1,8 +1,5 @@
 package fr.ecotrip.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import fr.ecotrip.backend.dto.UserRequest;
 import fr.ecotrip.backend.model.User;
 import fr.ecotrip.backend.repository.UserRepository;
@@ -16,7 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-public class UserServiceTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+
+class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -33,7 +35,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUser_Success() {
+    void testUpdateUser_Success() {
         Long userId = 1L;
 
         User existingUser = User.builder()

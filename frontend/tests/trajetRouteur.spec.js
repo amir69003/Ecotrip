@@ -100,7 +100,6 @@ describe("API Authentication and User Retrieval", () => {
 
             expect(matchingTrajets.length).toBeGreaterThan(0);
 
-            // Récupérer le dernier ajouté (avec l'ID le plus élevé)
             const lastCreatedTrajet = matchingTrajets.reduce((prev, curr) => (curr.id > prev.id ? curr : prev));
 
             const trajetId = lastCreatedTrajet.id;

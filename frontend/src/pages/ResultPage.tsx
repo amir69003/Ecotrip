@@ -16,7 +16,7 @@ function ResultPage() {
 
     const {error, isPending, mutate} = useMutation({
         mutationFn: async (trip: TripCarbonData) => {
-            const response = await fetch("http://127.0.0.1:8080/api/trajets", {
+            const response = await fetch("/api/trajets", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -42,7 +42,6 @@ function ResultPage() {
         }
     });
 
-    // fallback si aucun trajet n’est passé (accès direct à /result)
     if (!data) {
         return (
             <div className={styles.resultPage}>
