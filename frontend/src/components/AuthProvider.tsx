@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useCookies} from 'react-cookie';
 import {AuthUser} from "../model";
-import {AuthContext} from '../api/auth';
+import {AuthContext} from '../lib/auth.ts';
 
 const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [cookies] = useCookies(['access_token']);

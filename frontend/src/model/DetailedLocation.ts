@@ -1,11 +1,8 @@
-export type Lieu = {
-    ville?: string;
-    region?: string;
-    pays?: string;
-    displayName: string;
-};
-export type ItineraryItem = {
+
+export type DetailedLocation = {
     display_name: string; // Le nom affiché (ex : "Lyon, Rhône, France")
+    lat: number;
+    lon: number;
     address?: {
         city?: string;
         town?: string;
@@ -18,3 +15,5 @@ export type ItineraryItem = {
     };
     name?: string;
 };
+
+export default DetailedLocation;

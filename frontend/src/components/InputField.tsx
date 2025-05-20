@@ -1,9 +1,7 @@
-import React from "react";
-import { JSX } from "react";
+import React, {JSX} from "react";
 import styles from "../assets/styles/input.module.css";
-import { useSuggestions } from "../hooks/useSuggestions";
-import  {formatSuggestion} from  "../assets/services/locationService"
-import { Lieu,ItineraryItem } from "../assets/types/location";
+import {useSuggestions} from "../hooks/useSuggestions";
+import {DetailedLocation, Location} from "../model";
 
 type InputFieldProps = {
     label: string;
@@ -12,10 +10,10 @@ type InputFieldProps = {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     icon?: JSX.Element;
-    onLieuSelect: (lieu: Lieu) => void;
+    onLieuSelect: (lieu: Location) => void;
 };
 
-const InputField: React.FC<InputFieldProps> = ({ label, id, name, value, onChange, icon, onLieuSelect }) => {
+const InputField: React.FC<InputFieldProps> = ({label, id, name, value, onChange, icon, onLieuSelect}) => {
     const {
         suggestions,
         selectSuggestion,
@@ -28,14 +26,14 @@ const InputField: React.FC<InputFieldProps> = ({ label, id, name, value, onChang
         resetSelection();
     };
 
-    const formatLieu = (lieu: Lieu) => {
+    const formatLieu = (lieu: Location) => {
         return [lieu.ville, lieu.region, lieu.pays].filter(Boolean).join(", ");
     };
 
-    const handleLieuSelect = (item: ItineraryItem) => {
+    const handleLieuSelect = (item: DetailedLocation) => {
         const lieu = selectSuggestion(item);
         const formatted = formatLieu(lieu);
-        onChange({ target: { name, value: formatted } } as React.ChangeEvent<HTMLInputElement>);
+        onChange({target: {name, value: formatted}} as React.ChangeEvent<HTMLInputElement>);
         clearSuggestions(); // ✨
         onLieuSelect(lieu);
     };
@@ -43,7 +41,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, id, name, value, onChang
     return (
         <div className={styles.inputField}>
             <h2>{label}</h2>
-            <div className={styles.inputContainer} style={{ position: "relative" }}>
+            <div className={styles.inputContainer} style={{position: "relative"}}>
                 {icon}
                 <input
                     className={styles.input}
@@ -59,13 +57,13 @@ const InputField: React.FC<InputFieldProps> = ({ label, id, name, value, onChang
 
                 {suggestions.length > 0 && (
                     <div className={styles.suggestionBox}>
-                        {suggestions.map((item) => (
+                        {suggestions.map((item, i) => (
                             <div
-                                key={item.display_name}
+                                key={i}
                                 className={styles.suggestionItem}
                                 onClick={() => handleLieuSelect(item)}
                             >
-                                {formatSuggestion(item)}
+                                {item.display_name}
                             </div>
                         ))}
                     </div>

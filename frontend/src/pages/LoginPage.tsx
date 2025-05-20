@@ -2,7 +2,7 @@ import EcoTrip from "./../assets/images/EcoTrip.png";
 import styles from "../assets/styles/login.module.css";
 import LoginForm from "../components/LoginForm";
 import {useLocation, useNavigate} from "react-router";
-import {useLogin} from "../api/auth.ts";
+import {useLogin} from "../lib/auth.ts";
 import React, {useEffect, useState} from "react";
 import {LoginDTO} from "../model";
 

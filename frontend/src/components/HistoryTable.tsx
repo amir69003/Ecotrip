@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
 import styles from "../assets/styles/history.module.css";
-import { Trip } from "../assets/types/trip.ts";
+import {Trip} from "../model";
 
 type Props = {
     trips: Trip[];
@@ -11,18 +11,18 @@ type Props = {
     onDelete: (trip: Trip) => void;
 };
 
-export default function HistoryTable({
-                                         trips,
-                                         currentPage,
-                                         goToPage,
-                                         totalPages,
-                                         paginationRange,
-                                         onDelete,
-                                     }: Props) {
+const HistoryTable = ({
+                          trips,
+                          currentPage,
+                          goToPage,
+                          totalPages,
+                          paginationRange,
+                          onDelete,
+                      }: Props) => {
     const navigate = useNavigate();
 
     const handleNavigate = (trip: Trip) => {
-        navigate("/result", { state: trip });
+        navigate("/result", {state: trip});
     };
 
     return (
@@ -38,53 +38,61 @@ export default function HistoryTable({
                 </tr>
                 </thead>
                 <tbody>
-                {trips.map((trip, index) => (
-                    <tr key={index} className={styles.row}>
-                        <td onClick={() => handleNavigate(trip)}>
-                            <div className={styles.lieu}>
-                                <div>{trip.departure.ville || trip.departure.displayName}</div>
-                                {trip.departure.region && (
-                                    <div className={styles.sousTexte}>{trip.departure.region}</div>
-                                )}
-                                {trip.departure.pays && (
-                                    <div className={styles.sousTexte}>{trip.departure.pays}</div>
-                                )}
-                            </div>
-                        </td>
-                        <td onClick={() => handleNavigate(trip)}>
-                            <div className={styles.lieu}>
-                                <div>{trip.arrival.ville || trip.arrival.displayName}</div>
-                                {trip.arrival.region && (
-                                    <div className={styles.sousTexte}>{trip.arrival.region}</div>
-                                )}
-                                {trip.arrival.pays && (
-                                    <div className={styles.sousTexte}>{trip.arrival.pays}</div>
-                                )}
-                            </div>
-                        </td>
-                        <td onClick={() => handleNavigate(trip)}>
-                            {trip.transport}
-                        </td>
-                        <td onClick={() => handleNavigate(trip)}>
-                            <strong>{trip.carbon_impact}</strong> kCO2e
-                        </td>
-                        <td>
-                            <button
-                                className={styles.deleteButton}
-                                onClick={() => onDelete(trip)}
-                            >
-                                Supprimer
-                            </button>
-                        </td>
-                    </tr>
-                ))}
+                {trips.length > 0 ?
+                    trips.map((trip, index) => (
+                            <tr key={index} className={styles.row}>
+                                <td onClick={() => handleNavigate(trip)}>
+                                    <div className={styles.lieu}>
+                                        <div>{trip.depart.split(',').slice(0, 4).join(',')}</div>
+                                        {/*{trip.depart.region && (
+                                            <div className={styles.sousTexte}>{trip.depart.region}</div>
+                                        )}
+                                        {trip.depart.pays && (
+                                            <div className={styles.sousTexte}>{trip.depart.pays}</div>
+                                        )}*/}
+                                    </div>
+                                </td>
+                                <td onClick={() => handleNavigate(trip)}>
+                                    <div className={styles.lieu}>
+                                        <div>{trip.arrivee.split(',').slice(0, 4).join(',')}</div>
+                                        {/*{trip.arrivee.region && (
+                                            <div className={styles.sousTexte}>{trip.arrivee.region}</div>
+                                        )}
+                                        {trip.arrivee.pays && (
+                                            <div className={styles.sousTexte}>{trip.arrivee.pays}</div>
+                                        )}*/}
+                                    </div>
+                                </td>
+                                <td onClick={() => handleNavigate(trip)}>
+                                    {trip.moyenTransport}
+                                </td>
+                                <td onClick={() => handleNavigate(trip)}>
+                                    <strong>{trip.kco2}</strong> kCO2e
+                                </td>
+                                <td>
+                                    <button
+                                        className={styles.deleteButton}
+                                        onClick={() => onDelete(trip)}
+                                    >
+                                        Supprimer
+                                    </button>
+                                </td>
+                            </tr>
+                        )
+                    ) : (
+                        <tr>
+                            <td colSpan={5} className={styles.noData}>
+                                Aucun trajet trouvé
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 
             <div className={styles.pagination}>
                 <button
                     onClick={() => goToPage(currentPage - 1)}
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 1 || totalPages === 0}
                 >
                     Page précédente
                 </button>
@@ -101,7 +109,7 @@ export default function HistoryTable({
 
                 <button
                     onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage === totalPages || totalPages === 0}
                 >
                     Page suivante
                 </button>
@@ -109,3 +117,5 @@ export default function HistoryTable({
         </div>
     );
 }
+
+export default HistoryTable;

@@ -1,11 +1,10 @@
-// src/hooks/useSuggestions.ts
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Lieu, ItineraryItem } from "../assets/types/location";
-import { extractLieu } from "../assets/services/locationService";
-import { fetchOpenStreetMapSuggestions } from "../api/openStreetMapApi";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {extractLieu} from "../assets/services/locationService";
+import {fetchOpenStreetMapLocationSuggestions} from "../lib/openStreetMap.ts";
+import {DetailedLocation, Location} from "../model";
 
 export function useSuggestions(query: string) {
-    const [suggestions, setSuggestions] = useState<ItineraryItem[]>([]);
+    const [suggestions, setSuggestions] = useState<DetailedLocation[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -15,7 +14,7 @@ export function useSuggestions(query: string) {
     const fetchSuggestions = useCallback(async () => {
         try {
             setIsLoading(true);
-            const data = await fetchOpenStreetMapSuggestions(query);
+            const data = await fetchOpenStreetMapLocationSuggestions(query);
             setSuggestions(data);
         } catch (error) {
             console.error("Erreur fetchSuggestions:", error);
@@ -56,7 +55,7 @@ export function useSuggestions(query: string) {
         }, 200);
     };
 
-    const selectSuggestion = (item: ItineraryItem): Lieu => {
+    const selectSuggestion = (item: DetailedLocation): Location => {
         setSuggestions([]);
         setHasSelected(true);
         return extractLieu(item);

@@ -1,6 +1,6 @@
 import React, {JSX, useEffect} from "react";
 import {useLocation, useNavigate} from "react-router";
-import {useAuthSession} from "../api/auth";
+import {useAuthSession} from "../lib/auth.ts";
 
 type ProtectedPageProps = {
     children: JSX.Element;
