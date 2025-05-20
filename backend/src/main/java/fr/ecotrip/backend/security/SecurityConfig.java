@@ -48,6 +48,7 @@ public class SecurityConfig {
                                 "/v3/api-docs*/**").permitAll()
                         .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/trajets/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/co2s/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .build();
