@@ -59,7 +59,7 @@ const InputField: React.FC<InputFieldProps> = ({label, id, name, value, onChange
                     <div className={styles.suggestionBox}>
                         {suggestions.map((item, i) => (
                             <div
-                                key={i + item.name}
+                                key={i + "detailed"}
                                 className={styles.suggestionItem}
                                 onClick={() => handleLieuSelect(item)}
                             >
