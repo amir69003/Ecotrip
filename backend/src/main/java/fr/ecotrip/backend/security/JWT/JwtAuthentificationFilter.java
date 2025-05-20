@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -24,7 +25,6 @@ import java.util.Optional;
  *
  * <p>Utilise {@link JwtDecoder} pour décoder le JWT et {@link JwtToPrincipalConverter} pour
  * transformer le JWT en principal utilisateur.</p>
- *
  */
 @Component
 @RequiredArgsConstructor
@@ -79,6 +79,12 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             return Optional.of(token.substring(7));
         }
+
+        token = Arrays.stream(request.getCookies()).map(cookie -> cookie.getName().equals("access_token") ? cookie.getValue() : null).findFirst().orElse(null);
+        if (StringUtils.hasText(token)) {
+            return Optional.of(token);
+        }
+
         return Optional.empty();
     }
 }
