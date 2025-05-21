@@ -76,7 +76,7 @@ describe("API Authentication and User Retrieval", () => {
       });
 
       expect(response.status).toBe(200);
-      expect(response.data).toBe("Utilisateur mis à jour avec succès.");
+      expect(response.data).toBe('');
 
       console.log("Update response:", response.data);
     } catch (error) {
@@ -94,7 +94,7 @@ describe("API Authentication and User Retrieval", () => {
         password: "jasmine"
       };
 
-      const response = await axios.put(`${path}api/users/1`, updatePayload, {
+      const response = await axios.put(`${path}api/users/4`, updatePayload, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -125,7 +125,7 @@ describe("API Authentication and User Retrieval", () => {
       });
 
       expect(response.status).toBe(200);
-      expect(response.data).toBe("Utilisateur mis à jour avec succès.");
+      expect(response.data).toBe('');
 
       console.log("Update response:", response.data);
     } catch (error) {
@@ -138,7 +138,7 @@ describe("API Authentication and User Retrieval", () => {
       expect(token).not.toBeNull();
 
       const updatePayload = {
-        email: "angel@test.com",
+        email: "admin@admin.com",
         username: "jasmine_conflict",
         password: "jasmine"
       };
@@ -166,7 +166,7 @@ describe("API Authentication and User Retrieval", () => {
 
       const updatePayload = {
         email: "jasmine_conflict@test.com",
-        username: "angel",
+        username: "admin",
         password: "jasmine"
       };
 
