@@ -34,6 +34,14 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.equals("/") ||
+                path.equals("/auth/login") ||
+                path.equals("/auth/register");
+    }
+
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
         var token = request.getHeader("Authorization");
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
