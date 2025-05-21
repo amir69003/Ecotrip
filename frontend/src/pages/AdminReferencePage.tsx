@@ -33,8 +33,8 @@ export default function AdminReferencePage() {
     });
 
     const {isError: isPatchError, error: patchError, isPending, mutate} = useMutation({
-        mutationFn: async (ref: CO2Reference) => {
-            const response = await fetch(`/api/co2s/${ref.id}`, {
+        mutationFn: async ({id, ref}: { id: number, ref: CO2Reference }) => {
+            const response = await fetch(`/api/co2s/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -62,11 +62,10 @@ export default function AdminReferencePage() {
         const index = parseInt(name);
         setRefs((prev) => {
             if (prev) {
-                //prev[index].kCo2 = parseFloat(value);
-                const toUpdate = prev?.find(ref => ref.id === index)
-                if (toUpdate) {
-                    toUpdate.kCo2 = parseFloat(value);
+                if (index < 0 || index >= prev.length) {
+                    return prev;
                 }
+                prev[index].kCo2 = parseFloat(value);
             }
             return prev;
         });
@@ -74,8 +73,8 @@ export default function AdminReferencePage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        for (const r of refs) {
-            mutate(r);
+        for (let i = 1; i < transportOptions.length + 1; i++) {
+            mutate({id: i, ref: refs[i - 1]});
         }
     };
 

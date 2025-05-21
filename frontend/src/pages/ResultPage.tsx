@@ -110,7 +110,7 @@ function ResultPage() {
                                 </button>
                             </>
                         ) : (
-                            <button className={styles.button} onClick={() => navigate("/login")}>
+                            <button className={styles.button} onClick={() => navigate("/login", {state: {from: location.pathname}})}>
                                 Connectez-vous pour enregistrer le trajet
                             </button>
                         )}
